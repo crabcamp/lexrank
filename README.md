@@ -1,2 +1,2 @@
 # lexrank
-requestor - Luka Shostenko
+LexRank algorithm for text summarization.
