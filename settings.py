@@ -8,4 +8,4 @@ def get_folder(name):
     return Path(mod.__path__[0])
 
 
-ASSETS_ROOT = get_folder('assets')
+ASSETS_ROOT = get_folder('lexrank.assets')

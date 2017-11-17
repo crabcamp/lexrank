@@ -5,7 +5,7 @@ import sys
 from colorama import Fore, Style
 
 import settings
-from utils.text import clean_text
+from lexrank.utils.text import clean_text
 
 
 def assemble_stopwords():

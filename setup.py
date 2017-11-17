@@ -8,11 +8,11 @@ with requirements.open(mode='rt', encoding='utf-8') as fp:
     install_requires = [line.strip() for line in fp]
 
 top_packages = [
-    'algorithms',
-    'assets',
-    'mappings',
-    'tools',
-    'utils',
+    'lexrank.algorithms',
+    'lexrank.assets',
+    'lexrank.mappings',
+    'lexrank.tools',
+    'lexrank.utils',
 ]
 
 packages_pattern = top_packages + [p + '.*' for p in top_packages]
@@ -31,7 +31,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'assemble_stopwords = tools.assemble_stopwords:assemble_stopwords',
+            'assemble_stopwords = lexrank.tools.assemble_stopwords:assemble_stopwords',  # noqa
         ]
     }
 )
