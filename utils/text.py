@@ -6,18 +6,15 @@ EMAIL_REGEX = regex.compile(
 PUNCTUATION_SIGNS = set('.,;:¡!¿?…⋯&‹›«»\"“”[]()⟨⟩}{/|\\')
 
 
-def clean_text(text, allowed_chars='- ', lowercase=True):
-    text = ' '.join(text.split())
+def clean_text(text, allowed_chars='- '):
+    text = ' '.join(text.lower().split())
+    text = ''.join(ch for ch in text if ch.isalnum() or ch in allowed_chars)
 
-    if lowercase:
-        text = text.lower()
+    return text
 
-    text = ''.join(
-        ch for ch in text
-        if ch in allowed_chars or ch.isalnum()
-    )
 
-    return ' '.join(text.split())
+def contains_letters(word):
+    return any(ch.isalpha() for ch in word)
 
 
 def contains_numbers(word):
@@ -31,3 +28,29 @@ def separate_punctuation(text):
         text = text.replace(ch, ' ' + ch + ' ')
 
     return text
+
+
+def tokenize(text, stopwords, keep_numbers=False, keep_emails=False):
+    if not keep_emails:
+        emails = set(EMAIL_REGEX.findall(text))
+
+        for email in emails:
+            text = text.replace(email, ' ')
+
+    text = separate_punctuation(text)
+    text = clean_text(text)
+
+    if keep_numbers:
+        tokens = [
+            word for word in text.split()
+            if contains_letters(word) and word not in stopwords
+        ]
+
+    else:
+        tokens = [
+            word for word in text.split()
+            if contains_letters(word) and not contains_numbers(word) and
+            word not in stopwords
+        ]
+
+    return tokens
