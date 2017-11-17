@@ -1,6 +1,6 @@
 import numpy as np
 
-from lexrank.algorithms.lexrank import LexRank
+from lexrank.algorithms.summarizer import LexRank
 
 
 def test_lexrank():
