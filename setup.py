@@ -18,11 +18,11 @@ packages_pattern = top_packages + [p + '.*' for p in top_packages]
 
 setup(
     name='lexrank',
-    maintainer='LShostenko',
-    maintainer_email='luka.shostenko@gmail.com',
+    maintainer='Ocean S.A.',
+    maintainer_email='support@ocean.io',
     version='0.0.1a',
     description='LexRank text summarization.',
-    license='Apache License',
+    license='Closed source',
     packages=find_packages(include=packages_pattern),
     py_modules=['settings'],
     python_requires='>=3.6.0',
