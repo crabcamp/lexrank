@@ -8,6 +8,7 @@ with requirements.open(mode='rt', encoding='utf-8') as fp:
     install_requires = [line.strip() for line in fp]
 
 top_packages = [
+    'algorithms',
     'assets',
     'mappings',
     'tools',
