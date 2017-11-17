@@ -43,7 +43,8 @@ def tokenize(text, stopwords, keep_numbers=False, keep_emails=False):
     if keep_numbers:
         tokens = [
             word for word in text.split()
-            if contains_letters(word) and word not in stopwords
+            if (contains_letters(word) or contains_numbers(word)) and
+            word not in stopwords
         ]
 
     else:
