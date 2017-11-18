@@ -120,3 +120,27 @@ class LexRank():
                     similarity_matrix[j, i] = similarity
 
         return similarity_matrix
+
+    def calculate_markov_matrix(
+        self,
+        similarity_matrix,
+        similarity_threshold=.02,
+        discretize=True,
+    ):
+        if discretize:
+            markov_matrix = np.zeros(similarity_matrix.shape)
+
+            for i in range(len(similarity_matrix)):
+                columns = np.where(similarity_matrix[i] > similarity_threshold)[0]  # noqa
+                probability = 1 / len(columns)
+
+                for j in columns:
+                    markov_matrix[i, j] = probability
+
+        else:
+            markov_matrix = similarity_matrix
+
+            for i in range(len(markov_matrix)):
+                markov_matrix[i] /= markov_matrix[i].sum()
+
+        return markov_matrix
