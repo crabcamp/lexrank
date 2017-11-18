@@ -21,6 +21,24 @@ def contains_numbers(word):
     return any(ch.isdigit() for ch in word)
 
 
+def filter_words(words, stopwords, keep_numbers=False):
+    if keep_numbers:
+        words = [
+            word for word in words
+            if (contains_letters(word) or contains_numbers(word)) and
+            word not in stopwords
+        ]
+
+    else:
+        words = [
+            word for word in words
+            if contains_letters(word) and not contains_numbers(word) and
+            word not in stopwords
+        ]
+
+    return words
+
+
 def separate_punctuation(text):
     text_punctuation = set(text) & PUNCTUATION_SIGNS
 
@@ -31,27 +49,24 @@ def separate_punctuation(text):
 
 
 def tokenize(text, stopwords, keep_numbers=False, keep_emails=False):
-    if not keep_emails:
-        emails = set(EMAIL_REGEX.findall(text))
+    tokens = []
+    ix = 0
 
-        for email in emails:
-            text = text.replace(email, ' ')
+    for found in EMAIL_REGEX.finditer(text):
+        part = text[ix: found.start()]
+        words = clean_text(separate_punctuation(part)).split()
+        words = filter_words(words, stopwords, keep_numbers=keep_numbers)
 
-    text = separate_punctuation(text)
-    text = clean_text(text)
+        email = found.group()
+        ix = found.end()
 
-    if keep_numbers:
-        tokens = [
-            word for word in text.split()
-            if (contains_letters(word) or contains_numbers(word)) and
-            word not in stopwords
-        ]
+        tokens.extend(words)
 
-    else:
-        tokens = [
-            word for word in text.split()
-            if contains_letters(word) and not contains_numbers(word) and
-            word not in stopwords
-        ]
+        if keep_emails:
+            tokens.append(email)
+
+    words = clean_text(separate_punctuation(text[ix:])).split()
+    words = filter_words(words, stopwords, keep_numbers=keep_numbers)
+    tokens.extend(words)
 
     return tokens

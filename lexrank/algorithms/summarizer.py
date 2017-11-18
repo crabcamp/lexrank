@@ -47,6 +47,7 @@ class LexRank():
             keep_numbers=self.keep_numbers,
             keep_emails=self.keep_emails,
         )
+
         return tokens
 
     def calculate_idf(self):
