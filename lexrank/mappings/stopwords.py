@@ -3,7 +3,7 @@ import json
 
 from pyrsistent import freeze
 
-import settings
+from lexrank import settings
 
 file = settings.ASSETS_ROOT / 'stopwords.json.gz'
 
