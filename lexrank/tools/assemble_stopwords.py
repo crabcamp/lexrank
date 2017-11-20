@@ -4,7 +4,7 @@ import sys
 
 from colorama import Fore, Style
 
-import settings
+from lexrank import settings
 from lexrank.utils.text import clean_text
 
 
