@@ -147,8 +147,8 @@ class LexRank():
     ):
         if not isinstance(threshold, float) and not 0 <= threshold < 1:
             raise ValueError(
-                'Threshold must be floating-point number '
-                'from the interval [0, 1).'
+                '\'threshold\' should be a floating-point number '
+                'from the interval [0, 1)'
             )
 
         tf_scores = [
@@ -185,6 +185,9 @@ class LexRank():
         discretize=True,
         fast_power_method=True,
     ):
+        if not isinstance(summary_size, int) and summary_size < 1:
+            raise ValueError('\'summary_size\' should be a positive integer')
+
         lexrank = self.rank_sentences(
             sentences,
             threshold=threshold,
