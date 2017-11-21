@@ -76,12 +76,12 @@ def test_lexrank():
     lexrank = LexRank(documents, stopwords=set(), keep_numbers=True)
 
     tf_scores = [
-        lexrank.calculate_tf(lexrank.tokenize_sentence(sentence))
+        lexrank._calculate_tf(lexrank.tokenize_sentence(sentence))
         for sentence in sentences
     ]
 
     similarity_matrix = np.round(
-        lexrank.calculate_similarity_matrix(tf_scores), 2,
+        lexrank._calculate_similarity_matrix(tf_scores), 2,
     )
 
     expected_similarity_matrix = np.array([

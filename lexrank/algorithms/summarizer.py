@@ -3,6 +3,7 @@ from collections import defaultdict
 
 import numpy as np
 
+from lexrank.algorithms.power_method import stationary_distribution
 from lexrank.utils.text import tokenize
 
 
@@ -11,13 +12,11 @@ class LexRank():
         self,
         documents,
         stopwords,
-        similarity_threshold=.1,
         keep_numbers=False,
         keep_emails=False,
         include_new_words=True,
     ):
         self.stopwords = stopwords
-        self.similarity_threshold = similarity_threshold
         self.keep_numbers = keep_numbers
         self.keep_emails = keep_emails
         self.include_new_words = include_new_words
@@ -38,7 +37,7 @@ class LexRank():
             raise ValueError('Documents are not informative.')
 
         self.bags_of_words = bags_of_words
-        self.idf_score = self.calculate_idf()
+        self.idf_score = self._calculate_idf()
 
     def tokenize_sentence(self, sentence):
         tokens = tokenize(
@@ -50,7 +49,7 @@ class LexRank():
 
         return tokens
 
-    def calculate_idf(self):
+    def _calculate_idf(self):
         doc_number_total = len(self.bags_of_words)
 
         if self.include_new_words:
@@ -67,7 +66,7 @@ class LexRank():
 
         return idf_score
 
-    def calculate_tf(self, tokenized_sentence):
+    def _calculate_tf(self, tokenized_sentence):
         tf_score = dict()
 
         for word in set(tokenized_sentence):
@@ -76,7 +75,7 @@ class LexRank():
 
         return tf_score
 
-    def idf_modified_cosine(self, tf_scores, i, j):
+    def _idf_modified_cosine(self, tf_scores, i, j):
         if i == j:
             return 1
 
@@ -106,14 +105,14 @@ class LexRank():
 
         return similarity
 
-    def calculate_similarity_matrix(self, tf_scores):
+    def _calculate_similarity_matrix(self, tf_scores):
         length = len(tf_scores)
 
         similarity_matrix = np.zeros([length] * 2)
 
         for i in range(length):
             for j in range(i, length):
-                similarity = self.idf_modified_cosine(tf_scores, i, j)
+                similarity = self._idf_modified_cosine(tf_scores, i, j)
 
                 if similarity:
                     similarity_matrix[i, j] = similarity
@@ -121,26 +120,79 @@ class LexRank():
 
         return similarity_matrix
 
-    def calculate_markov_matrix(
-        self,
-        similarity_matrix,
-        similarity_threshold=.02,
-        discretize=True,
-    ):
-        if discretize:
-            markov_matrix = np.zeros(similarity_matrix.shape)
+    def _markov_matrix_discrete(self, similarity_matrix, threshold):
+        markov_matrix = np.zeros(similarity_matrix.shape)
 
-            for i in range(len(similarity_matrix)):
-                columns = np.where(similarity_matrix[i] > similarity_threshold)[0]  # noqa
-                probability = 1 / len(columns)
-
-                for j in columns:
-                    markov_matrix[i, j] = probability
-
-        else:
-            markov_matrix = similarity_matrix
-
-            for i in range(len(markov_matrix)):
-                markov_matrix[i] /= markov_matrix[i].sum()
+        for i in range(len(similarity_matrix)):
+            columns = np.where(similarity_matrix[i] > threshold)[0]  # noqa
+            markov_matrix[i, columns] = 1 / len(columns)
 
         return markov_matrix
+
+    def _markov_matrix(self, similarity_matrix):
+        markov_matrix = similarity_matrix
+
+        for i in range(len(markov_matrix)):
+            markov_matrix[i] /= markov_matrix[i].sum()
+
+        return markov_matrix
+
+    def rank_sentences(
+        self,
+        sentences,
+        threshold=.1,
+        discretize=True,
+        fast_power_method=True,
+        normalize=False,
+    ):
+        if not isinstance(threshold, float) and not 0 <= threshold < 1:
+            raise ValueError(
+                'Threshold must be floating-point number '
+                'from the interval [0, 1).'
+            )
+
+        tf_scores = [
+            self._calculate_tf(self.tokenize_sentence(sentence))
+            for sentence in sentences
+        ]
+        similarity_matrix = self._calculate_similarity_matrix(tf_scores)
+
+        if discretize:
+            markov_matrix = self._markov_matrix_discrete(
+                similarity_matrix,
+                threshold=threshold,
+            )
+
+        else:
+            markov_matrix = self._markov_matrix(similarity_matrix)
+
+        lexrank = stationary_distribution(
+            markov_matrix,
+            increase_power=fast_power_method,
+        )
+
+        if normalize:
+            max_val = max(lexrank)
+            lexrank = [val / max_val for val in lexrank]
+
+        return lexrank
+
+    def get_summary(
+        self,
+        sentences,
+        summary_size,
+        threshold=.1,
+        discretize=True,
+        fast_power_method=True,
+    ):
+        lexrank = self.rank_sentences(
+            sentences,
+            threshold=threshold,
+            discretize=discretize,
+            fast_power_method=fast_power_method,
+        )
+
+        sorted_ix = np.argsort(lexrank)[::-1]
+        summary = [sentences[i] for i in sorted_ix[:summary_size]]
+
+        return summary
