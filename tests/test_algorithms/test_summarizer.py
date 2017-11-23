@@ -1,3 +1,4 @@
+import math
 import numpy as np
 
 from lexrank.algorithms.summarizer import LexRank
@@ -10,6 +11,24 @@ def test_lexrank():
 
     except ValueError:
         pass
+
+    lexrank = LexRank(
+        [['Hello,'], ['World!']],
+        stopwords=set(),
+        include_new_words=False
+    )
+
+    assert math.isclose(lexrank.idf_score['hello'], math.log(2))
+    assert lexrank.idf_score['test'] == 0
+
+    lexrank = LexRank(
+        [['Hello,'], ['World!']],
+        stopwords=set(),
+        include_new_words=True
+    )
+
+    assert math.isclose(lexrank.idf_score['world'], math.log(2))
+    assert math.isclose(lexrank.idf_score['test'], math.log(3))
 
     d1_s1 = 'Iraqi Vice President Taha Yassin Ramadan announced today, ' \
         'Sunday, that Iraq refuses to back down from its decision to stop ' \
