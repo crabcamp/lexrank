@@ -11,16 +11,25 @@ from lexrank.algorithms.power_method import (
 def test_connected_nodes():
     t_matrix = np.array([[1]])
     expected_result = [[0]]
+    assert connected_nodes(t_matrix) == expected_result
 
+    t_matrix = np.array([[1, 0], [0, 1]])
+    expected_result = [[0], [1]]
+    assert connected_nodes(t_matrix) == expected_result
+
+    t_matrix = np.array([[1, 0], [1, 0]])
+    expected_result = [[0, 1]]
+    assert connected_nodes(t_matrix) == expected_result
+
+    t_matrix = np.array([[1]])
+    expected_result = [[0]]
     assert connected_nodes(t_matrix) == expected_result
 
     t_matrix = np.array([[.6, .1, .3], [.1, .7, .2], [.2, .2, .6]])
-
     expected_result = [[0, 1, 2]]
     assert connected_nodes(t_matrix) == expected_result
 
     t_matrix = np.array([[.5, 0, .5], [0, 1, 0], [.5, 0, .5]])
-
     expected_result = [[0, 2], [1]]
     assert connected_nodes(t_matrix) == expected_result
 
@@ -29,7 +38,6 @@ def test_connected_nodes():
     mat_3 = np.array([[0, 1], [1, 0]])
     mat_4 = np.array([[.6, .1, .3], [.1, .7, .2], [.2, .2, .6]])
     t_matrix = block_diag(mat_1, mat_2, mat_3, mat_4)
-
     expected_result = [[0, 2], [1], [3], [4, 5], [6, 7, 8]]
     assert connected_nodes(t_matrix) == expected_result
 
