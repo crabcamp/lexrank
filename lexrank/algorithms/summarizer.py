@@ -130,12 +130,9 @@ class LexRank():
         return markov_matrix
 
     def _markov_matrix(self, similarity_matrix):
-        markov_matrix = similarity_matrix
+        row_sum = np.matrix(similarity_matrix.sum(axis=1)).transpose()
 
-        for i in range(len(markov_matrix)):
-            markov_matrix[i] /= markov_matrix[i].sum()
-
-        return markov_matrix
+        return similarity_matrix / row_sum
 
     def rank_sentences(
         self,

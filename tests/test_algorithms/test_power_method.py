@@ -126,3 +126,13 @@ def test_stationary_distribution():
 
     for row in data[1:]:
         assert np.array_equal(row, test_row)
+
+    sample_num = 1000
+    big_t_mat = np.random.random([sample_num] * 2)
+    big_t_mat /= np.matrix(big_t_mat.sum(axis=1)).transpose()
+    distribution_1 = stationary_distribution(big_t_mat, increase_power=True)
+    distribution_2 = stationary_distribution(big_t_mat, increase_power=False)
+
+    assert math.isclose(sum(distribution_1), 1)
+    assert math.isclose(sum(distribution_2), 1)
+    assert np.allclose(distribution_1, distribution_2)
