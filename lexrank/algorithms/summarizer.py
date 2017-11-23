@@ -130,19 +130,23 @@ class LexRank():
         return markov_matrix
 
     def _markov_matrix(self, similarity_matrix):
-        row_sum = np.matrix(similarity_matrix.sum(axis=1)).transpose()
+        markov_matrix = similarity_matrix
+        row_sum = markov_matrix.sum(axis=1)
 
-        return similarity_matrix / row_sum
+        for ix in range(len(row_sum)):
+            markov_matrix[ix] /= row_sum[ix]
+
+        return markov_matrix
 
     def rank_sentences(
         self,
         sentences,
-        threshold=.1,
+        threshold=.03,
         discretize=True,
         fast_power_method=True,
         normalize=False,
     ):
-        if not isinstance(threshold, float) and not 0 <= threshold < 1:
+        if not isinstance(threshold, float) or not 0 <= threshold < 1:
             raise ValueError(
                 '\'threshold\' should be a floating-point number '
                 'from the interval [0, 1)'
@@ -182,7 +186,7 @@ class LexRank():
         discretize=True,
         fast_power_method=True,
     ):
-        if not isinstance(summary_size, int) and summary_size < 1:
+        if not isinstance(summary_size, int) or summary_size < 1:
             raise ValueError('\'summary_size\' should be a positive integer')
 
         lexrank = self.rank_sentences(
