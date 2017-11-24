@@ -17,6 +17,5 @@ flake8-tuple==0.2.13
 pytest==3.2.5
 pytest-cov==2.5.1
 pytest-catchlog==1.2.2
-pytest-warnings==0.3.0
 
 pip-review==1.0
