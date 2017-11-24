@@ -34,7 +34,7 @@ class LexRank():
                 bags_of_words.append(doc_words)
 
         if not bags_of_words:
-            raise ValueError('Documents are not informative.')
+            raise ValueError('documents are not informative')
 
         self.bags_of_words = bags_of_words
         self.idf_score = self._calculate_idf()
