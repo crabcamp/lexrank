@@ -1,4 +1,5 @@
 import math
+
 import numpy as np
 
 from lexrank.algorithms.summarizer import LexRank
@@ -15,7 +16,7 @@ def test_lexrank():
     lexrank = LexRank(
         [['Hello,'], ['World!']],
         stopwords=set(),
-        include_new_words=False
+        include_new_words=False,
     )
 
     assert math.isclose(lexrank.idf_score['hello'], math.log(2))
@@ -24,7 +25,7 @@ def test_lexrank():
     lexrank = LexRank(
         [['Hello,'], ['World!']],
         stopwords=set(),
-        include_new_words=True
+        include_new_words=True,
     )
 
     assert math.isclose(lexrank.idf_score['world'], math.log(2))
@@ -120,7 +121,7 @@ def test_lexrank():
         [0.17, 0.04, 0.05, 0.06, 0.05, 0.04, 0.05, 1.00, 0.04, 0.05, 0.04],
         [0.03, 0.01, 0.01, 0.05, 0.03, 0.06, 0.01, 0.04, 1.00, 0.20, 0.24],
         [0.00, 0.02, 0.03, 0.06, 0.03, 0.08, 0.01, 0.05, 0.20, 1.00, 0.10],
-        [0.00, 0.01, 0.02, 0.03, 0.06, 0.04, 0.01, 0.04, 0.24, 0.10, 1.00]
+        [0.00, 0.01, 0.02, 0.03, 0.06, 0.04, 0.01, 0.04, 0.24, 0.10, 1.00],
     ])
 
     assert np.array_equal(similarity_matrix, expected_similarity_matrix)
@@ -136,7 +137,7 @@ def test_lexrank():
     lex_scores = lexrank.rank_sentences(
         sentences, normalize=True, discretize=False)
     expexted_lex_scores = [
-        0.78, 1., 0.91, 1., 0.91, 0.95, 0.83, 0.86, 0.9, 0.86, 0.84
+        0.78, 1., 0.91, 1., 0.91, 0.95, 0.83, 0.86, 0.9, 0.86, 0.84,
     ]
 
     assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)

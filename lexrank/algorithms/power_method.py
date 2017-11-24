@@ -24,7 +24,7 @@ def _power_method(transition_matrix, increase_power=True):
 
 def connected_nodes(matrix):
     _, labels = connected_components(matrix)
-    groups = dict()
+    groups = {}
 
     for ix, label in enumerate(labels):
         if label in groups:
