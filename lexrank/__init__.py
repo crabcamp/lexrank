@@ -1,1 +1,1 @@
-from lexrank.algorithms.summarizer import LexRank
+from lexrank.algorithms.summarizer import LexRank  # noqa
