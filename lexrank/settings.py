@@ -9,3 +9,9 @@ def get_folder(name):
 
 
 ASSETS_ROOT = get_folder('lexrank.assets')
+
+try:
+    DATA_ROOT = get_folder('data')
+
+except ImportError:
+    pass
