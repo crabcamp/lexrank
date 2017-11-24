@@ -1,12 +1,14 @@
-fsudo: required
-
 dist: trusty
 
+sudo: required
+
+language: python
+
 python:
-  - "3.6"
-  - "3.5"
-  - "3.4"
   - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
 
 before_install:
   - python --version
