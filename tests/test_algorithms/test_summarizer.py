@@ -1,9 +1,35 @@
+import math
 import numpy as np
 
 from lexrank.algorithms.summarizer import LexRank
 
 
 def test_lexrank():
+    try:
+        lexrank = LexRank([[]], stopwords=set())
+        raise AssertionError
+
+    except ValueError:
+        pass
+
+    lexrank = LexRank(
+        [['Hello,'], ['World!']],
+        stopwords=set(),
+        include_new_words=False
+    )
+
+    assert math.isclose(lexrank.idf_score['hello'], math.log(2))
+    assert lexrank.idf_score['test'] == 0
+
+    lexrank = LexRank(
+        [['Hello,'], ['World!']],
+        stopwords=set(),
+        include_new_words=True
+    )
+
+    assert math.isclose(lexrank.idf_score['world'], math.log(2))
+    assert math.isclose(lexrank.idf_score['test'], math.log(3))
+
     d1_s1 = 'Iraqi Vice President Taha Yassin Ramadan announced today, ' \
         'Sunday, that Iraq refuses to back down from its decision to stop ' \
         'cooperating with disarmament inspectors before its demands are met.'
@@ -50,7 +76,7 @@ def test_lexrank():
         'crisis between the international community and Iraq “did not end” ' \
         'and that Britain is still “ready, prepared, and able to strike Iraq.”'
 
-    d5_s2 = 'n a gathering with the press held at the Prime Minister’s ' \
+    d5_s2 = 'In a gathering with the press held at the Prime Minister’s ' \
         'office, Blair contended that the crisis with Iraq “will not end ' \
         'until Iraq has absolutely and unconditionally respected its ' \
         'commitments” towards the United Nations.'
@@ -61,8 +87,7 @@ def test_lexrank():
 
     documents = [
         [d1_s1],
-        [d2_s1, d2_s2],
-        [d2_s3],
+        [d2_s1, d2_s2, d2_s3],
         [d3_s1, d3_s2, d3_s3],
         [d4_s1],
         [d5_s1, d5_s2, d5_s3],
@@ -76,26 +101,59 @@ def test_lexrank():
     lexrank = LexRank(documents, stopwords=set(), keep_numbers=True)
 
     tf_scores = [
-        lexrank.calculate_tf(lexrank.tokenize_sentence(sentence))
+        lexrank._calculate_tf(lexrank.tokenize_sentence(sentence))
         for sentence in sentences
     ]
 
     similarity_matrix = np.round(
-        lexrank.calculate_similarity_matrix(tf_scores), 2,
+        lexrank._calculate_similarity_matrix(tf_scores), 2,
     )
 
     expected_similarity_matrix = np.array([
-        [1.00, 0.18, 0.03, 0.02, 0.00, 0.02, 0.01, 0.20, 0.03, 0.01, 0.00],
-        [0.18, 1.00, 0.30, 0.08, 0.01, 0.02, 0.02, 0.03, 0.01, 0.01, 0.01],
-        [0.03, 0.30, 1.00, 0.06, 0.01, 0.01, 0.02, 0.04, 0.01, 0.02, 0.01],
-        [0.02, 0.08, 0.06, 1.00, 0.05, 0.06, 0.20, 0.06, 0.06, 0.05, 0.03],
-        [0.00, 0.01, 0.01, 0.05, 1.00, 0.34, 0.08, 0.04, 0.04, 0.03, 0.07],
-        [0.02, 0.02, 0.01, 0.06, 0.34, 1.00, 0.08, 0.03, 0.07, 0.08, 0.05],
-        [0.01, 0.02, 0.02, 0.20, 0.08, 0.08, 1.00, 0.04, 0.00, 0.01, 0.00],
-        [0.20, 0.03, 0.04, 0.06, 0.04, 0.03, 0.04, 1.00, 0.04, 0.04, 0.04],
-        [0.03, 0.01, 0.01, 0.06, 0.04, 0.07, 0.00, 0.04, 1.00, 0.20, 0.24],
-        [0.01, 0.01, 0.02, 0.05, 0.03, 0.08, 0.01, 0.04, 0.20, 1.00, 0.09],
-        [0.00, 0.01, 0.01, 0.03, 0.07, 0.05, 0.00, 0.04, 0.24, 0.09, 1.00],
+        [1.00, 0.17, 0.02, 0.03, 0.00, 0.01, 0.00, 0.17, 0.03, 0.00, 0.00],
+        [0.17, 1.00, 0.32, 0.19, 0.02, 0.03, 0.03, 0.04, 0.01, 0.02, 0.01],
+        [0.02, 0.32, 1.00, 0.13, 0.02, 0.02, 0.05, 0.05, 0.01, 0.03, 0.02],
+        [0.03, 0.19, 0.13, 1.00, 0.05, 0.05, 0.19, 0.06, 0.05, 0.06, 0.03],
+        [0.00, 0.02, 0.02, 0.05, 1.00, 0.33, 0.09, 0.05, 0.03, 0.03, 0.06],
+        [0.01, 0.03, 0.02, 0.05, 0.33, 1.00, 0.09, 0.04, 0.06, 0.08, 0.04],
+        [0.00, 0.03, 0.05, 0.19, 0.09, 0.09, 1.00, 0.05, 0.01, 0.01, 0.01],
+        [0.17, 0.04, 0.05, 0.06, 0.05, 0.04, 0.05, 1.00, 0.04, 0.05, 0.04],
+        [0.03, 0.01, 0.01, 0.05, 0.03, 0.06, 0.01, 0.04, 1.00, 0.20, 0.24],
+        [0.00, 0.02, 0.03, 0.06, 0.03, 0.08, 0.01, 0.05, 0.20, 1.00, 0.10],
+        [0.00, 0.01, 0.02, 0.03, 0.06, 0.04, 0.01, 0.04, 0.24, 0.10, 1.00]
     ])
 
     assert np.array_equal(similarity_matrix, expected_similarity_matrix)
+
+    lex_scores = lexrank.rank_sentences(
+        sentences, normalize=True, discretize=True, threshold=.01)
+    expexted_lex_scores = [
+        0.55, 0.82, 0.91, 1., 0.91, 0.91, 0.73, 1., 0.73, 0.91, 0.73,
+    ]
+
+    assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)
+
+    lex_scores = lexrank.rank_sentences(
+        sentences, normalize=True, discretize=False)
+    expexted_lex_scores = [
+        0.78, 1., 0.91, 1., 0.91, 0.95, 0.83, 0.86, 0.9, 0.86, 0.84
+    ]
+
+    assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)
+
+    summary = lexrank.get_summary(sentences, 1, threshold=.01)
+    assert summary == [d4_s1]
+
+    try:
+        summary = lexrank.get_summary(sentences, 0)
+        raise AssertionError
+
+    except ValueError:
+        pass
+
+    try:
+        summary = lexrank.get_summary(sentences, 5, threshold=1.8)
+        raise AssertionError
+
+    except ValueError:
+        pass
