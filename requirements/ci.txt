@@ -1,0 +1,8 @@
+-r core.txt
+
+isort==4.2.15
+flake8==3.5.0
+pytest==3.2.5
+pytest-cov==2.5.1
+
+pip-review==1.0
