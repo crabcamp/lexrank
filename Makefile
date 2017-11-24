@@ -1,7 +1,7 @@
 
 lint:
-	flake8 --show-source lexrank
-	isort --check-only -rc lexrank --diff
+	flake8 --show-source lexrank tests
+	isort --check-only -rc lexrank tests --diff
 
 test:
 	pytest tests
