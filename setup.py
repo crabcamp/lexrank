@@ -16,7 +16,7 @@ setup(
     license='Closed source',
     packages=find_packages(include=['lexrank.*']),
     py_modules=['lexrank.settings'],
-    python_requires='>=3.4.0',
+    python_requires='>=3.5.0',
     install_requires=install_requires,
     include_package_data=True,
     entry_points={
