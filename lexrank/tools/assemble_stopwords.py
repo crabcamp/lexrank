@@ -12,7 +12,7 @@ def assemble_stopwords():
 
     files = source_dir.files('*.txt')
 
-    stopwords_map = dict()
+    stopwords_map = {}
 
     for file in files:
         lang = file.namebase

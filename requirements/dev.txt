@@ -1,2 +1,5 @@
-ipython==6.1.0
+-r core.txt
+-r ci.txt
+
+ipython==6.2.1
 ipdb==0.10.3

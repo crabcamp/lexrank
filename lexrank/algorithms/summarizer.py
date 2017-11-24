@@ -67,7 +67,7 @@ class LexRank():
         return idf_score
 
     def _calculate_tf(self, tokenized_sentence):
-        tf_score = dict()
+        tf_score = {}
 
         for word in set(tokenized_sentence):
             tf = tokenized_sentence.count(word)
@@ -149,13 +149,14 @@ class LexRank():
         if not isinstance(threshold, float) or not 0 <= threshold < 1:
             raise ValueError(
                 '\'threshold\' should be a floating-point number '
-                'from the interval [0, 1)'
+                'from the interval [0, 1)',
             )
 
         tf_scores = [
             self._calculate_tf(self.tokenize_sentence(sentence))
             for sentence in sentences
         ]
+
         similarity_matrix = self._calculate_similarity_matrix(tf_scores)
 
         if discretize:
