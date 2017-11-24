@@ -182,7 +182,7 @@ class LexRank():
         self,
         sentences,
         summary_size,
-        threshold=.1,
+        threshold=.03,
         discretize=True,
         fast_power_method=True,
     ):
