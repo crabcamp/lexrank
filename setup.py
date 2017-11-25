@@ -22,6 +22,6 @@ setup(
     entry_points={
         'console_scripts': [
             'assemble_stopwords = lexrank.tools.assemble_stopwords:assemble_stopwords',  # noqa
-        ]
-    }
+        ],
+    },
 )

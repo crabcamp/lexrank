@@ -1,7 +1,6 @@
 import gzip
 
-from lexrank import LexRank
-from lexrank import settings
+from lexrank import LexRank, settings
 from lexrank.mappings.stopwords import STOPWORDS
 
 
