@@ -1,2 +1,4 @@
+graft lexrank/assets
+
 global-exclude *.pyc
 global-exclude __pycache__
