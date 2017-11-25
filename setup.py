@@ -21,7 +21,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'assemble_stopwords = lexrank.tools.assemble_stopwords:assemble_stopwords',  # noqa
+            'assemble_stopwords = lexrank.tools.assemble_stopwords:entrypoint',
         ],
     },
 )
