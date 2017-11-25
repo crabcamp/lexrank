@@ -130,13 +130,9 @@ class LexRank():
         return markov_matrix
 
     def _markov_matrix(self, similarity_matrix):
-        markov_matrix = similarity_matrix
-        row_sum = markov_matrix.sum(axis=1)
+        row_sum = similarity_matrix.sum(axis=1, keepdims=True)
 
-        for ix in range(len(row_sum)):
-            markov_matrix[ix] /= row_sum[ix]
-
-        return markov_matrix
+        return similarity_matrix / row_sum
 
     def rank_sentences(
         self,
