@@ -1,4 +1,2 @@
 [run]
-omit =
-    lexrank/mappings/*
-    lexrank/settings.py
+omit = lexrank/settings.py
