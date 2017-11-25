@@ -24,9 +24,7 @@ def assemble_stopwords():
 
         stopwords_map[lang] = list(lang_words)
 
-        sys.stdout.write('  ' + lang + ' ' + 'stopwords collected\n')
-
-    with gzip.open(out_file, mode='wt', encoding='utf-8') as fp:
+    with gzip.open(out_file, mode='xt', encoding='utf-8') as fp:
         json.dump(stopwords_map, fp)
 
         msg = 'Stopwords written to {out_file}\n'.format(out_file=out_file)
