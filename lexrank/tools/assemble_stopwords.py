@@ -1,8 +1,7 @@
+import argparse
 import gzip
 import json
 import sys
-
-import argparse
 
 from path import Path
 
