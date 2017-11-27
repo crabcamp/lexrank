@@ -2,3 +2,4 @@
 omit =
     lexrank/settings.py
     lexrank/tools/*
+    */__init__.py
