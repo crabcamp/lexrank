@@ -1,12 +1,13 @@
 import gzip
 
-from lexrank import LexRank, settings
+from lexrank import LexRank
 from lexrank.mappings.stopwords import STOPWORDS
+from tests.settings import DATA_ROOT
 
 
 def test_lexrank():
     documents = []
-    documents_dir = settings.DATA_ROOT / 'bbc_politics'
+    documents_dir = DATA_ROOT / 'bbc_politics'
     document_files = documents_dir.files()
 
     for file in document_files:
