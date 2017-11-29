@@ -21,7 +21,7 @@ script:
   - make test
 
 after_script:
-  - travis_retry pip-review
+  - travis_retry pip list --outdated
 
 after_success:
   - make lint
