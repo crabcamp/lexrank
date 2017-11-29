@@ -137,7 +137,7 @@ def test_stationary_distribution():
 
     sample_num = 1000
     big_t_mat = np.random.random([sample_num] * 2)
-    big_t_mat /= np.matrix(big_t_mat.sum(axis=1)).transpose()
+    big_t_mat /= big_t_mat.sum(axis=1, keepdims=True)
     distribution_1 = stationary_distribution(big_t_mat, increase_power=True)
     distribution_2 = stationary_distribution(big_t_mat, increase_power=False)
 
