@@ -1,17 +1,14 @@
 import math
 
 import numpy as np
+import pytest
 
 from lexrank.algorithms.summarizer import LexRank
 
 
 def test_lexrank():
-    try:
+    with pytest.raises(ValueError):
         lexrank = LexRank([[]], stopwords=set())
-        raise AssertionError
-
-    except ValueError:
-        pass
 
     lexrank = LexRank(
         [['Hello,'], ['World!']],
@@ -145,16 +142,8 @@ def test_lexrank():
     summary = lexrank.get_summary(sentences, 1, threshold=.01)
     assert summary == [d4_s1]
 
-    try:
+    with pytest.raises(ValueError):
         summary = lexrank.get_summary(sentences, 0)
-        raise AssertionError
 
-    except ValueError:
-        pass
-
-    try:
+    with pytest.raises(ValueError):
         summary = lexrank.get_summary(sentences, 5, threshold=1.8)
-        raise AssertionError
-
-    except ValueError:
-        pass
