@@ -1,5 +1,6 @@
 graft lexrank/assets
-graft requirements/core.txt
+
+include requirements/core.txt
 
 global-exclude *.pyc
 global-exclude __pycache__
