@@ -16,8 +16,9 @@ Installation
 Usage
 -----
 
-We use `BBC news dataset <http://mlg.ucd.ie/files/datasets/bbc-fulltext.zip>`_
-as corpus of documents.
+In the following example we use
+`BBC news dataset <http://mlg.ucd.ie/files/datasets/bbc-fulltext.zip>`_
+as a corpus of documents:
 
 .. code-block:: python
 
