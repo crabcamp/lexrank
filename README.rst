@@ -64,7 +64,8 @@ as a corpus of documents:
         'banking sector, education and the welfare state.',
     ]
 
-    lexrank.get_summary(sentences, 1, discretize=False)
+    summary = lexrank.get_summary(sentences, discretize=False)
+    print(summary)
 
 Notes
 -----
