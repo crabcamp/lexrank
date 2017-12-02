@@ -8,11 +8,10 @@ from lexrank.algorithms.summarizer import LexRank
 
 def test_lexrank():
     with pytest.raises(ValueError):
-        lexrank = LexRank([[]], stopwords=set())
+        lexrank = LexRank([[]])
 
     lexrank = LexRank(
         [['Hello,'], ['World!']],
-        stopwords=set(),
         include_new_words=False,
     )
 
@@ -21,7 +20,6 @@ def test_lexrank():
 
     lexrank = LexRank(
         [['Hello,'], ['World!']],
-        stopwords=set(),
         include_new_words=True,
     )
 
@@ -96,7 +94,7 @@ def test_lexrank():
     for doc in documents:
         sentences.extend(doc)
 
-    lexrank = LexRank(documents, stopwords=set(), keep_numbers=True)
+    lexrank = LexRank(documents, keep_numbers=True)
 
     tf_scores = [
         lexrank._calculate_tf(lexrank.tokenize_sentence(sentence))
