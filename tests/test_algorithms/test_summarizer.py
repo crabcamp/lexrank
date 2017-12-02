@@ -137,11 +137,11 @@ def test_lexrank():
 
     assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)
 
-    summary = lexrank.get_summary(sentences, 1, threshold=.01)
+    summary = lexrank.get_summary(sentences, threshold=.01)
     assert summary == [d4_s1]
 
     with pytest.raises(ValueError):
-        summary = lexrank.get_summary(sentences, 0)
+        summary = lexrank.get_summary(sentences, summary_size=0)
 
     with pytest.raises(ValueError):
-        summary = lexrank.get_summary(sentences, 5, threshold=1.8)
+        summary = lexrank.get_summary(sentences, summary_size=5, threshold=1.8)
