@@ -1,18 +1,23 @@
-# lexrank
+lexrank
+=======
 
 :info: LexRank algorithm for text summarization
 
 .. image:: https://travis-ci.org/wikibusiness/lexrank.svg?branch=dev
     :target: https://travis-ci.org/wikibusiness/lexrank
 
-## Installation
+Installation
+------------
 
 .. code-block:: shell
 
     # not implemented
 
-## Usage
-### Simple example
+Usage
+-----
+
+Simple example
+~~~~~~~~~~~~~~
 
 In the following example we use
 `BBC news dataset <http://mlg.ucd.ie/files/datasets/bbc-fulltext.zip>`_
@@ -65,7 +70,8 @@ as a corpus of documents:
     summary = lexrank.get_summary(sentences, discretize=False)
     print(summary)
 
-## References
+References
+----------
 
 Güneş Erkan and Dragomir R. Radev:
 `LexRank: Graph-based Lexical Centrality as Salience in Text Summarization
