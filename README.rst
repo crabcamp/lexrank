@@ -28,5 +28,5 @@ References
 ---------
 
 Güneş Erkan and Dragomir R. Radev:
-`LexRank: Graph-based Lexical Centrality as Salience in Text Summarization
+`*LexRank: Graph-based Lexical Centrality as Salience in Text Summarization*
 <http://www.jair.org/papers/paper1523.html>`_.
