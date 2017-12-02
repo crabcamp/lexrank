@@ -73,10 +73,9 @@ as a corpus of documents:
 Module contents
 ~~~~~~~~~~~~~~~
 
-lexrank.**LexRank**(*documents, stopwords=None, keep_numbers=False,
+lexrank.\ **LexRank**\ (*documents, stopwords=None, keep_numbers=False,
 keep_emails=False, include_new_words=True,*)
-
---Returns an object for ranking sentences using given 'documents' (a sequence of lists of sentences).--
+:Returns an object for ranking sentences using given 'documents' (a sequence of lists of sentences).
 
 References
 ----------
