@@ -1,7 +1,7 @@
 lexrank
 =======
 
-:info: LexRank algorithm for text summarization.
+:info: LexRank algorithm for text summarization
 
 .. image:: https://travis-ci.org/wikibusiness/lexrank.svg?branch=dev
     :target: https://travis-ci.org/wikibusiness/lexrank
@@ -28,5 +28,5 @@ References
 ---------
 
 Güneş Erkan and Dragomir R. Radev:
-`*LexRank: Graph-based Lexical Centrality as Salience in Text Summarization*
+`LexRank: Graph-based Lexical Centrality as Salience in Text Summarization
 <http://www.jair.org/papers/paper1523.html>`_.
