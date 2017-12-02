@@ -6,8 +6,6 @@ lexrank
 .. image:: https://travis-ci.org/wikibusiness/lexrank.svg?branch=dev
     :target: https://travis-ci.org/wikibusiness/lexrank
 
-For the details of
-
 Installation
 ------------
 
@@ -31,4 +29,4 @@ References
 
 Güneş Erkan and Dragomir R. Radev:
 `LexRank: Graph-based Lexical Centrality as Salience in Text Summarization
-<http://www.jair.org/papers/paper1523.html>`
+<http://www.jair.org/papers/paper1523.html>`_.
