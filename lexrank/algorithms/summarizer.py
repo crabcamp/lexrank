@@ -11,12 +11,16 @@ class LexRank():
     def __init__(
         self,
         documents,
-        stopwords,
+        stopwords=None,
         keep_numbers=False,
         keep_emails=False,
         include_new_words=True,
     ):
-        self.stopwords = stopwords
+        if stopwords is None:
+            self.stopwords = set()
+        else:
+            self.stopwords = stopwords
+
         self.keep_numbers = keep_numbers
         self.keep_emails = keep_emails
         self.include_new_words = include_new_words

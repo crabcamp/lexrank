@@ -31,3 +31,5 @@ cache:
 
 notifications:
   email: false
+
+  slack: oceanio:4CG2OxeU91DXAXKX5VsHeD8l
