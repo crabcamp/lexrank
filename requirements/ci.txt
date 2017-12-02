@@ -14,6 +14,6 @@ flake8-print==3.0.1
 flake8-quotes==0.12.
 flake8-tuple==0.2.13
 
-pytest==3.2.5
+pytest==3.3.0
 pytest-cov==2.5.1
 pytest-catchlog==1.2.2
