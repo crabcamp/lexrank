@@ -65,20 +65,20 @@ as a corpus of documents.
     ]
 
     # get summary with classical LexRank algorithm
-    summary_1 = lxr.get_summary(sentences, summary_size=2, threshold=.1)
-    print(summary_1)
+    summary = lxr.get_summary(sentences, summary_size=2, threshold=.1)
+    print(summary)
 
     # get summary with continuous LexRank
     # default value for 'summary_size' is 1 and 'threshold' is not referenced
-    summary_2 = lxr.get_summary(sentences, discretize=False)
-    print(summary_2)
+    summary_cont = lxr.get_summary(sentences, discretize=False)
+    print(summary_cont)
 
     # get LexRank scores for sentences
     # when 'normalize' is True, all the scores are divided by the maximal one
     # 'fast_power_method' speeds up the calculation, but requires more memory
-    scores = lxr.rank_sentences(sentences, discretize=False,
-                                normalize=True, fast_power_method=False)
-    print(scores)
+    scores_cont = lxr.rank_sentences(sentences, discretize=False,
+                                     normalize=True, fast_power_method=False)
+    print(scores_cont)
 
 Tests
 -----
