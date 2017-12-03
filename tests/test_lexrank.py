@@ -14,7 +14,7 @@ def test_lexrank():
         with gzip.open(file, mode='rt', encoding='utf-8') as fp:
             documents.append(fp.readlines())
 
-    lexrank = LexRank(
+    lxr = LexRank(
         documents,
         stopwords=STOPWORDS['en'],
         keep_numbers=False,
@@ -51,5 +51,5 @@ def test_lexrank():
         'banking sector, education and the welfare state.',
     ]
 
-    summary = lexrank.get_summary(sentences, 1, discretize=False)
+    summary = lxr.get_summary(sentences, discretize=False)
     assert summary == [sentences[5]]

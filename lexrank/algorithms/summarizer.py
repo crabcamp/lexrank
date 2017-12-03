@@ -182,7 +182,7 @@ class LexRank():
     def get_summary(
         self,
         sentences,
-        summary_size,
+        summary_size=1,
         threshold=.03,
         discretize=True,
         fast_power_method=True,

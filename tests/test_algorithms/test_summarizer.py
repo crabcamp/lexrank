@@ -8,23 +8,23 @@ from lexrank.algorithms.summarizer import LexRank
 
 def test_lexrank():
     with pytest.raises(ValueError):
-        lexrank = LexRank([[]])
+        lxr = LexRank([[]])
 
-    lexrank = LexRank(
+    lxr = LexRank(
         [['Hello,'], ['World!']],
         include_new_words=False,
     )
 
-    assert math.isclose(lexrank.idf_score['hello'], math.log(2))
-    assert lexrank.idf_score['test'] == 0
+    assert math.isclose(lxr.idf_score['hello'], math.log(2))
+    assert lxr.idf_score['test'] == 0
 
-    lexrank = LexRank(
+    lxr = LexRank(
         [['Hello,'], ['World!']],
         include_new_words=True,
     )
 
-    assert math.isclose(lexrank.idf_score['world'], math.log(2))
-    assert math.isclose(lexrank.idf_score['test'], math.log(3))
+    assert math.isclose(lxr.idf_score['world'], math.log(2))
+    assert math.isclose(lxr.idf_score['test'], math.log(3))
 
     d1_s1 = 'Iraqi Vice President Taha Yassin Ramadan announced today, ' \
         'Sunday, that Iraq refuses to back down from its decision to stop ' \
@@ -94,15 +94,15 @@ def test_lexrank():
     for doc in documents:
         sentences.extend(doc)
 
-    lexrank = LexRank(documents, keep_numbers=True)
+    lxr = LexRank(documents, keep_numbers=True)
 
     tf_scores = [
-        lexrank._calculate_tf(lexrank.tokenize_sentence(sentence))
+        lxr._calculate_tf(lxr.tokenize_sentence(sentence))
         for sentence in sentences
     ]
 
     similarity_matrix = np.round(
-        lexrank._calculate_similarity_matrix(tf_scores), 2,
+        lxr._calculate_similarity_matrix(tf_scores), 2,
     )
 
     expected_similarity_matrix = np.array([
@@ -121,7 +121,7 @@ def test_lexrank():
 
     assert np.array_equal(similarity_matrix, expected_similarity_matrix)
 
-    lex_scores = lexrank.rank_sentences(
+    lex_scores = lxr.rank_sentences(
         sentences, normalize=True, discretize=True, threshold=.01)
     expexted_lex_scores = [
         0.55, 0.82, 0.91, 1., 0.91, 0.91, 0.73, 1., 0.73, 0.91, 0.73,
@@ -129,7 +129,7 @@ def test_lexrank():
 
     assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)
 
-    lex_scores = lexrank.rank_sentences(
+    lex_scores = lxr.rank_sentences(
         sentences, normalize=True, discretize=False)
     expexted_lex_scores = [
         0.78, 1., 0.91, 1., 0.91, 0.95, 0.83, 0.86, 0.9, 0.86, 0.84,
@@ -137,11 +137,11 @@ def test_lexrank():
 
     assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)
 
-    summary = lexrank.get_summary(sentences, 1, threshold=.01)
+    summary = lxr.get_summary(sentences, threshold=.01)
     assert summary == [d4_s1]
 
     with pytest.raises(ValueError):
-        summary = lexrank.get_summary(sentences, 0)
+        summary = lxr.get_summary(sentences, summary_size=0)
 
     with pytest.raises(ValueError):
-        summary = lexrank.get_summary(sentences, 5, threshold=1.8)
+        summary = lxr.get_summary(sentences, summary_size=5, threshold=1.8)
