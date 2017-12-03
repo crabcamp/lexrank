@@ -16,9 +16,6 @@ Installation
 Usage
 -----
 
-Simple example
-~~~~~~~~~~~~~~
-
 In the following example we use
 `BBC news dataset <http://mlg.ucd.ie/files/datasets/bbc-fulltext.zip>`_
 as a corpus of documents:
@@ -67,8 +64,34 @@ as a corpus of documents:
         'banking sector, education and the welfare state.',
     ]
 
-    summary = lxr.get_summary(sentences, discretize=False)
-    print(summary)
+    # get summary with classical LexRank algorithm
+
+    summary_1 = lxr.get_summary(sentences, summary_size=2, threshold=.1)
+    print(summary_1)
+
+    # get summary with continuous LexRank
+    # default value for 'summary_size' is 1 and 'threshold' is not referenced
+
+    summary_2 = lxr.get_summary(sentences, discretize=False)
+    print(summary_2)
+
+Tests
+-----
+
+Tests are not supplied with the package, to rut them you need to clone the repository and install additional dependencies.
+
+.. code-block:: bash
+
+    # ensure virtualenv is activated
+    make install-dev
+
+Run linter and tests
+
+.. code-block:: bash
+
+    make lint
+    make test
+
 
 References
 ----------
