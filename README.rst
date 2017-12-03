@@ -65,13 +65,11 @@ as a corpus of documents.
     ]
 
     # get summary with classical LexRank algorithm
-
     summary_1 = lxr.get_summary(sentences, summary_size=2, threshold=.1)
     print(summary_1)
 
     # get summary with continuous LexRank
     # default value for 'summary_size' is 1 and 'threshold' is not referenced
-
     summary_2 = lxr.get_summary(sentences, discretize=False)
     print(summary_2)
 
