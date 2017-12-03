@@ -36,7 +36,7 @@ as a corpus of documents:
         with file.open(mode='rt', encoding='utf-8') as fp:
             documents.append(fp.readlines())
 
-    lexrank = LexRank(documents, stopwords=STOPWORDS['en'])
+    lxr = LexRank(documents, stopwords=STOPWORDS['en'])
 
     sentences = [
         'One of David Cameron\'s closest friends and Conservative allies, '
@@ -67,27 +67,8 @@ as a corpus of documents:
         'banking sector, education and the welfare state.',
     ]
 
-    summary = lexrank.get_summary(sentences, discretize=False)
+    summary = lxr.get_summary(sentences, discretize=False)
     print(summary)
-
-Module contents
-~~~~~~~~~~~~~~~
-
-lexrank.\ **LexRank**\ (*documents, stopwords=None, keep_numbers=False,
-keep_emails=False, include_new_words=True*)
-    Returns an object for summarizing texts using given corpus of *documents*
-    (a sequence of lists of sentences).
-    **Parameters:**
-
-        *stopwords*: set of words to ignore. Default is None.
-
-        *keep_numbers*: when the parameter is set to *False*, any word
-        containing a digit will be ignored
-
-        *keep_emails*: when *False*, emails in texts will not be taken into account.
-
-        *include_new_words*: when *False*, any word which is not present in the documents will be ignored. Otherwise its idf-score will be set to synthetic value :math: log(N_d + 1).
-
 
 References
 ----------
