@@ -91,7 +91,7 @@ as a corpus of documents.
         sentences,
         discretize=False,
         normalize=True,
-        fast_power_method=False
+        fast_power_method=False,
     )
     print(scores_cont)
 
