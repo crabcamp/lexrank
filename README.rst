@@ -76,8 +76,12 @@ as a corpus of documents.
     # get LexRank scores for sentences
     # when 'normalize' is True, all the scores are divided by the maximal one
     # 'fast_power_method' speeds up the calculation, but requires more memory
-    scores_cont = lxr.rank_sentences(sentences, discretize=False,
-                                     normalize=True, fast_power_method=False)
+    scores_cont = lxr.rank_sentences(
+        sentences,
+        discretize=False,
+        normalize=True,
+        fast_power_method=False
+    )
     print(scores_cont)
 
 Tests
