@@ -68,10 +68,21 @@ as a corpus of documents.
     summary = lxr.get_summary(sentences, summary_size=2, threshold=.1)
     print(summary)
 
+    # ['Mr Osborne said the coalition government was planning to change the tax '
+    #  'system "to make it fairer for people on low and middle incomes", and '
+    #  'undertake "long-term structural reform" of the banking sector, education and '
+    #  'the welfare state.',
+    #  'The BBC understands that as chancellor, Mr Osborne, along with the Treasury '
+    #  'will retain responsibility for overseeing banks and financial regulation.']
+
+
     # get summary with continuous LexRank
     # default value for 'summary_size' is 1 and 'threshold' is not referenced
     summary_cont = lxr.get_summary(sentences, discretize=False)
     print(summary_cont)
+
+    # ['The BBC understands that as chancellor, Mr Osborne, along with the Treasury '
+    #  'will retain responsibility for overseeing banks and financial regulation.']
 
     # get LexRank scores for sentences
     # when 'normalize' is True, all the scores are divided by the maximal one
@@ -83,6 +94,14 @@ as a corpus of documents.
         fast_power_method=False
     )
     print(scores_cont)
+
+    # [0.9193576793242669,
+    #  0.7602507729889821,
+    #  0.939832498150748,
+    #  0.6985590010158195,
+    #  0.6844271578353363,
+    #  1.0,
+    #  0.9036049881647119]
 
 Tests
 -----
