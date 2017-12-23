@@ -22,8 +22,7 @@ as a corpus of documents.
 
 .. code-block:: python
 
-    from lexrank import LexRank
-    from lexrank.mappings import STOPWORDS
+    from lexrank import LexRank, STOPWORDS
     from path import Path
 
     documents = []
@@ -102,6 +101,14 @@ as a corpus of documents.
     #  0.6844271578353363,
     #  1.0,
     #  0.9036049881647119]
+
+Stop words for 22 languages are included into the package. To define your own mapping of stop words, prepare text files with utf-8 encoding where words are separated by newlines. Then use the command
+
+.. code-block:: bash
+
+    assemble_stopwords --source_dir directory_with_txt_files
+
+that replaces the default mapping by user-defined one. Note that names of .txt files are used as keys in :bash:`STOPWORDS` dictionary.
 
 Tests
 -----
