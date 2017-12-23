@@ -113,7 +113,7 @@ that replaces the default mapping by user-defined one. Note that names of .txt f
 Tests
 -----
 
-Tests are not supplied with the package, to rut them you need to clone the repository and install additional dependencies.
+Tests are not supplied with the package, to run them you need to clone the repository and install additional dependencies.
 
 .. code-block:: bash
 
