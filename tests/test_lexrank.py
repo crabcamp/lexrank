@@ -1,7 +1,6 @@
 import gzip
 
-from lexrank import LexRank
-from lexrank.mappings import STOPWORDS
+from lexrank import LexRank, STOPWORDS
 from tests.settings import DATA_ROOT
 
 
