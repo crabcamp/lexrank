@@ -1,6 +1,6 @@
 import gzip
 
-from lexrank import LexRank, STOPWORDS
+from lexrank import STOPWORDS, LexRank
 from tests.settings import DATA_ROOT
 
 
@@ -9,8 +9,8 @@ def test_lexrank():
     documents_dir = DATA_ROOT / 'bbc_politics'
     document_files = documents_dir.files()
 
-    for file in document_files:
-        with gzip.open(file, mode='rt', encoding='utf-8') as fp:
+    for file_path in document_files:
+        with gzip.open(file_path, mode='rt', encoding='utf-8') as fp:
             documents.append(fp.readlines())
 
     lxr = LexRank(

@@ -13,11 +13,11 @@ def assemble_stopwords(source_dir):
     files = source_dir.files('*.txt')
     stopwords_map = {}
 
-    for file in files:
-        lang = file.namebase
+    for file_path in files:
+        lang = file_path.namebase
         lang_words = set()
 
-        with file.open(mode='rt', encoding='utf-8') as fp:
+        with file_path.open(mode='rt', encoding='utf-8') as fp:
             for name in fp.readlines():
                 lang_words.add(clean_text(name))
 
