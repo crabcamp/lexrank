@@ -1,2 +1,0 @@
-# lexrank
-requestor - Luka Shostenko

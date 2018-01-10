@@ -1,0 +1,4 @@
+[run]
+omit =
+    lexrank/settings.py
+    lexrank/tools/*
