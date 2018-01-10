@@ -7,12 +7,18 @@ requirements = Path(__file__).parent / 'requirements/core.txt'
 with requirements.open(mode='rt', encoding='utf-8') as fp:
     install_requires = [line.strip() for line in fp]
 
+readme = Path(__file__).parent / 'README.rst'
+
+with readme.open(mode='rt', encoding='utf-8') as fp:
+    readme_text = fp.read()
+
 setup(
     name='lexrank',
     maintainer='Ocean S.A.',
     maintainer_email='support@ocean.io',
     version='0.0.1a',
     description='LexRank text summarization',
+    long_description=readme_text,
     keywords=[
         'lex', 'rank', 'lexrank', 'algorithm', 'text', 'summary',
         'summarization',

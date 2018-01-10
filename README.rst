@@ -11,7 +11,7 @@ Installation
 
 .. code-block:: shell
 
-    # not implemented
+    pip install lexrank
 
 Usage
 -----
