@@ -16,7 +16,7 @@ setup(
     name='lexrank',
     maintainer='Ocean S.A.',
     maintainer_email='support@ocean.io',
-    version='0.0.1a',
+    version='0.0.1b',
     description='LexRank text summarization',
     long_description=readme_text,
     keywords=[
