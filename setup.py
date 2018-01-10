@@ -12,8 +12,16 @@ setup(
     maintainer='Ocean S.A.',
     maintainer_email='support@ocean.io',
     version='0.0.1a',
-    description='LexRank text summarization.',
-    license='Closed source',
+    description='LexRank text summarization',
+    keywords=[
+        'lex', 'rank', 'lexrank', 'algorithm', 'text', 'summary',
+        'summarization',
+    ],
+    license='MIT',
+    author='Luka Shostenko',
+    author_email='luka.shostenko@gmail.com',
+    url='https://github.com/wikibusiness/lexrank',
+    download_url='https://github.com/wikibusiness/lexrank/archive/0.0.1a.tar.gz',  # noqa
     packages=find_packages(include=['lexrank.*']),
     py_modules=['lexrank.settings'],
     python_requires='>=3.5.0',

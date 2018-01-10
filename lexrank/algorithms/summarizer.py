@@ -7,7 +7,7 @@ from lexrank.algorithms.power_method import stationary_distribution
 from lexrank.utils.text import tokenize
 
 
-class LexRank():
+class LexRank:
     def __init__(
         self,
         documents,
