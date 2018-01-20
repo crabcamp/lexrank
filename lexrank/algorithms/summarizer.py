@@ -80,16 +80,16 @@ class LexRank:
         else:
             markov_matrix = self._markov_matrix(similarity_matrix)
 
-        lexrank = stationary_distribution(
+        scores = stationary_distribution(
             markov_matrix,
             increase_power=fast_power_method,
         )
 
         if normalize:
-            max_val = max(lexrank)
-            lexrank = [val / max_val for val in lexrank]
+            scores_len = len(scores)
+            scores = [val * scores_len for val in scores]
 
-        return lexrank
+        return scores
 
     def tokenize_sentence(self, sentence):
         tokens = tokenize(
