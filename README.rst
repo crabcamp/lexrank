@@ -94,13 +94,13 @@ as a corpus of documents.
     )
     print(scores_cont)
 
-    # [0.9193576793242669,
-    #  0.7602507729889821,
-    #  0.939832498150748,
-    #  0.6985590010158195,
-    #  0.6844271578353363,
-    #  1.0,
-    #  0.9036049881647119]
+    #  [1.0896493024505858,
+    #  0.9010711968859021,
+    #  1.1139166497016315,
+    #  0.8279523250808547,
+    #  0.8112028559566362,
+    #  1.185228912485382,
+    #  1.0709787574388283]
 
 Stop words for 22 languages are included into the package. To define your own mapping of stop words, prepare text files with utf-8 encoding where words are separated by newlines. Then use the command
 
