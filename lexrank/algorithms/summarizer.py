@@ -38,14 +38,14 @@ class LexRank:
         if not isinstance(summary_size, int) or summary_size < 1:
             raise ValueError('\'summary_size\' should be a positive integer')
 
-        lexrank = self.rank_sentences(
+        lex_scores = self.rank_sentences(
             sentences,
             threshold=threshold,
             discretize=discretize,
             fast_power_method=fast_power_method,
         )
 
-        sorted_ix = np.argsort(lexrank)[::-1]
+        sorted_ix = np.argsort(lex_scores)[::-1]
         summary = [sentences[i] for i in sorted_ix[:summary_size]]
 
         return summary
