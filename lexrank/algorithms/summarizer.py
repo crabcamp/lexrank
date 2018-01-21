@@ -25,118 +25,30 @@ class LexRank:
         self.keep_emails = keep_emails
         self.include_new_words = include_new_words
 
-        bags_of_words = []
+        self.idf_score = self._calculate_idf(documents)
 
-        for doc in documents:
-            doc_words = set()
+    def get_summary(
+        self,
+        sentences,
+        summary_size=1,
+        threshold=.03,
+        discretize=True,
+        fast_power_method=True,
+    ):
+        if not isinstance(summary_size, int) or summary_size < 1:
+            raise ValueError('\'summary_size\' should be a positive integer')
 
-            for sentence in doc:
-                words = self.tokenize_sentence(sentence)
-                doc_words.update(words)
-
-            if doc_words:
-                bags_of_words.append(doc_words)
-
-        if not bags_of_words:
-            raise ValueError('documents are not informative')
-
-        self.bags_of_words = bags_of_words
-        self.idf_score = self._calculate_idf()
-
-    def tokenize_sentence(self, sentence):
-        tokens = tokenize(
-            sentence,
-            self.stopwords,
-            keep_numbers=self.keep_numbers,
-            keep_emails=self.keep_emails,
+        lex_scores = self.rank_sentences(
+            sentences,
+            threshold=threshold,
+            discretize=discretize,
+            fast_power_method=fast_power_method,
         )
 
-        return tokens
+        sorted_ix = np.argsort(lex_scores)[::-1]
+        summary = [sentences[i] for i in sorted_ix[:summary_size]]
 
-    def _calculate_idf(self):
-        doc_number_total = len(self.bags_of_words)
-
-        if self.include_new_words:
-            default_value = math.log(doc_number_total + 1)
-
-        else:
-            default_value = 0
-
-        idf_score = defaultdict(lambda: default_value)
-
-        for word in set.union(*self.bags_of_words):
-            doc_number_word = sum(1 for bag in self.bags_of_words if word in bag)  # noqa
-            idf_score[word] = math.log(doc_number_total / doc_number_word)
-
-        return idf_score
-
-    def _calculate_tf(self, tokenized_sentence):
-        tf_score = {}
-
-        for word in set(tokenized_sentence):
-            tf = tokenized_sentence.count(word)
-            tf_score[word] = tf
-
-        return tf_score
-
-    def _idf_modified_cosine(self, tf_scores, i, j):
-        if i == j:
-            return 1
-
-        tf_i, tf_j = tf_scores[i], tf_scores[j]
-        words_i, words_j = set(tf_i.keys()), set(tf_j.keys())
-
-        nominator = 0
-
-        for word in words_i & words_j:
-            idf = self.idf_score[word]
-            nominator += tf_i[word] * tf_j[word] * idf ** 2
-
-        if math.isclose(nominator, 0):
-            return 0
-
-        denominator_i, denominator_j = 0, 0
-
-        for word in words_i:
-            tfidf = tf_i[word] * self.idf_score[word]
-            denominator_i += tfidf ** 2
-
-        for word in words_j:
-            tfidf = tf_j[word] * self.idf_score[word]
-            denominator_j += tfidf ** 2
-
-        similarity = nominator / math.sqrt(denominator_i * denominator_j)
-
-        return similarity
-
-    def _calculate_similarity_matrix(self, tf_scores):
-        length = len(tf_scores)
-
-        similarity_matrix = np.zeros([length] * 2)
-
-        for i in range(length):
-            for j in range(i, length):
-                similarity = self._idf_modified_cosine(tf_scores, i, j)
-
-                if similarity:
-                    similarity_matrix[i, j] = similarity
-                    similarity_matrix[j, i] = similarity
-
-        return similarity_matrix
-
-    def _markov_matrix_discrete(self, similarity_matrix, threshold):
-        markov_matrix = np.zeros(similarity_matrix.shape)
-
-        for i in range(len(similarity_matrix)):
-            columns = np.where(similarity_matrix[i] > threshold)[0]  # noqa
-            markov_matrix[i, columns] = 1 / len(columns)
-
-        return markov_matrix
-
-    def _markov_matrix(self, similarity_matrix):
-        row_sum = similarity_matrix.sum(axis=1, keepdims=True)
-
-        return similarity_matrix / row_sum
+        return summary
 
     def rank_sentences(
         self,
@@ -168,36 +80,123 @@ class LexRank:
         else:
             markov_matrix = self._markov_matrix(similarity_matrix)
 
-        lexrank = stationary_distribution(
+        scores = stationary_distribution(
             markov_matrix,
             increase_power=fast_power_method,
         )
 
         if normalize:
-            max_val = max(lexrank)
-            lexrank = [val / max_val for val in lexrank]
+            scores_len = len(scores)
+            scores = [val * scores_len for val in scores]
 
-        return lexrank
+        return scores
 
-    def get_summary(
-        self,
-        sentences,
-        summary_size=1,
-        threshold=.03,
-        discretize=True,
-        fast_power_method=True,
-    ):
-        if not isinstance(summary_size, int) or summary_size < 1:
-            raise ValueError('\'summary_size\' should be a positive integer')
-
-        lexrank = self.rank_sentences(
-            sentences,
-            threshold=threshold,
-            discretize=discretize,
-            fast_power_method=fast_power_method,
+    def tokenize_sentence(self, sentence):
+        tokens = tokenize(
+            sentence,
+            self.stopwords,
+            keep_numbers=self.keep_numbers,
+            keep_emails=self.keep_emails,
         )
 
-        sorted_ix = np.argsort(lexrank)[::-1]
-        summary = [sentences[i] for i in sorted_ix[:summary_size]]
+        return tokens
 
-        return summary
+    def _calculate_idf(self, documents):
+        bags_of_words = []
+
+        for doc in documents:
+            doc_words = set()
+
+            for sentence in doc:
+                words = self.tokenize_sentence(sentence)
+                doc_words.update(words)
+
+            if doc_words:
+                bags_of_words.append(doc_words)
+
+        if not bags_of_words:
+            raise ValueError('documents are not informative')
+
+        doc_number_total = len(bags_of_words)
+
+        if self.include_new_words:
+            default_value = math.log(doc_number_total + 1)
+
+        else:
+            default_value = 0
+
+        idf_score = defaultdict(lambda: default_value)
+
+        for word in set.union(*bags_of_words):
+            doc_number_word = sum(1 for bag in bags_of_words if word in bag)
+            idf_score[word] = math.log(doc_number_total / doc_number_word)
+
+        return idf_score
+
+    def _calculate_tf(self, tokenized_sentence):
+        tf_score = {}
+
+        for word in set(tokenized_sentence):
+            tf = tokenized_sentence.count(word)
+            tf_score[word] = tf
+
+        return tf_score
+
+    def _calculate_similarity_matrix(self, tf_scores):
+        length = len(tf_scores)
+
+        similarity_matrix = np.zeros([length] * 2)
+
+        for i in range(length):
+            for j in range(i, length):
+                similarity = self._idf_modified_cosine(tf_scores, i, j)
+
+                if similarity:
+                    similarity_matrix[i, j] = similarity
+                    similarity_matrix[j, i] = similarity
+
+        return similarity_matrix
+
+    def _idf_modified_cosine(self, tf_scores, i, j):
+        if i == j:
+            return 1
+
+        tf_i, tf_j = tf_scores[i], tf_scores[j]
+        words_i, words_j = set(tf_i.keys()), set(tf_j.keys())
+
+        nominator = 0
+
+        for word in words_i & words_j:
+            idf = self.idf_score[word]
+            nominator += tf_i[word] * tf_j[word] * idf ** 2
+
+        if math.isclose(nominator, 0):
+            return 0
+
+        denominator_i, denominator_j = 0, 0
+
+        for word in words_i:
+            tfidf = tf_i[word] * self.idf_score[word]
+            denominator_i += tfidf ** 2
+
+        for word in words_j:
+            tfidf = tf_j[word] * self.idf_score[word]
+            denominator_j += tfidf ** 2
+
+        similarity = nominator / math.sqrt(denominator_i * denominator_j)
+
+        return similarity
+
+    def _markov_matrix(self, similarity_matrix):
+        row_sum = similarity_matrix.sum(axis=1, keepdims=True)
+
+        return similarity_matrix / row_sum
+
+    def _markov_matrix_discrete(self, similarity_matrix, threshold):
+        markov_matrix = np.zeros(similarity_matrix.shape)
+
+        for i in range(len(similarity_matrix)):
+            columns = np.where(similarity_matrix[i] > threshold)[0]
+            markov_matrix[i, columns] = 1 / len(columns)
+
+        return markov_matrix
