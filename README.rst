@@ -6,6 +6,9 @@ lexrank
 .. image:: https://travis-ci.org/wikibusiness/lexrank.svg?branch=dev
     :target: https://travis-ci.org/wikibusiness/lexrank
 
+.. image:: https://badge.fury.io/py/lexrank.svg
+    :target: https://badge.fury.io/py/lexrank
+
 Installation
 ------------
 
