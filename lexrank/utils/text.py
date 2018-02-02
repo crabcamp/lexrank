@@ -1,9 +1,12 @@
 import regex
+from urlextract import URLExtract
 
 EMAIL_REGEX = regex.compile(
     r'[\p{L}0-9]+[\p{L}0-9_.+-]*[\p{L}0-9_+-]+@[\p{L}0-9]+[\p{L}0-9.-]*\.\p{L}+'  # noqa
 )
 PUNCTUATION_SIGNS = set('.,;:¡!¿?…⋯&‹›«»\"“”[]()⟨⟩}{/|\\')
+
+url_extractor = URLExtract()
 
 
 def clean_text(text, allowed_chars='- '):
@@ -48,25 +51,35 @@ def separate_punctuation(text):
     return text
 
 
-def tokenize(text, stopwords, keep_numbers=False, keep_emails=False):
+def tokenize(
+    text,
+    stopwords,
+    keep_numbers=False,
+    keep_emails=False,
+    keep_urls=False,
+):
     tokens = []
-    ix = 0
 
-    for found in EMAIL_REGEX.finditer(text):
-        part = text[ix: found.start()]
-        words = clean_text(separate_punctuation(part)).split()
-        words = filter_words(words, stopwords, keep_numbers=keep_numbers)
+    for word in text.split():
+        emails = EMAIL_REGEX.findall(word)
 
-        email = found.group()
-        ix = found.end()
+        if emails:
+            if keep_emails:
+                tokens.append(emails[0])
 
-        tokens.extend(words)
+            continue
 
-        if keep_emails:
-            tokens.append(email)
+        urls = url_extractor.find_urls(word, only_unique=True)
 
-    words = clean_text(separate_punctuation(text[ix:])).split()
-    words = filter_words(words, stopwords, keep_numbers=keep_numbers)
-    tokens.extend(words)
+        if urls:
+            if keep_urls:
+                tokens.append(urls[0].lower())
+
+            continue
+
+        cleaned = clean_text(separate_punctuation(word)).split()
+        cleaned = filter_words(cleaned, stopwords, keep_numbers=keep_numbers)
+
+        tokens.extend(cleaned)
 
     return tokens

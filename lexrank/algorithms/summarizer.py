@@ -14,6 +14,7 @@ class LexRank:
         stopwords=None,
         keep_numbers=False,
         keep_emails=False,
+        keep_urls=False,
         include_new_words=True,
     ):
         if stopwords is None:
@@ -23,6 +24,7 @@ class LexRank:
 
         self.keep_numbers = keep_numbers
         self.keep_emails = keep_emails
+        self.keep_urls = keep_urls
         self.include_new_words = include_new_words
 
         self.idf_score = self._calculate_idf(documents)
@@ -97,6 +99,7 @@ class LexRank:
             self.stopwords,
             keep_numbers=self.keep_numbers,
             keep_emails=self.keep_emails,
+            keep_urls=self.keep_urls,
         )
 
         return tokens
