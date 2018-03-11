@@ -109,7 +109,7 @@ Stop words for 22 languages are included into the package. To define your own ma
 
 .. code-block:: bash
 
-    assemble_stopwords --source_dir directory_with_txt_files
+    lexrank_assemble_stopwords --source_dir directory_with_txt_files
 
 that replaces the default mapping. Note that names of .txt files are used as keys in `STOPWORDS` dictionary.
 
