@@ -184,7 +184,9 @@ def test_stationary_distribution():
     big_t_mat /= big_t_mat.sum(axis=1, keepdims=True)
     distribution_1 = stationary_distribution(big_t_mat, increase_power=True)
     distribution_2 = stationary_distribution(big_t_mat, increase_power=False)
+    distribution_3 = stationary_distribution(big_t_mat, normalized=False)
 
     assert math.isclose(sum(distribution_1), 1)
     assert math.isclose(sum(distribution_2), 1)
+    assert math.isclose(sum(distribution_3), sample_num)
     assert np.allclose(distribution_1, distribution_2)

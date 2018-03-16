@@ -1,5 +1,5 @@
 import math
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 import numpy as np
 
@@ -34,7 +34,6 @@ class LexRank:
         sentences,
         summary_size=1,
         threshold=.03,
-        discretize=True,
         fast_power_method=True,
     ):
         if not isinstance(summary_size, int) or summary_size < 1:
@@ -43,7 +42,6 @@ class LexRank:
         lex_scores = self.rank_sentences(
             sentences,
             threshold=threshold,
-            discretize=discretize,
             fast_power_method=fast_power_method,
         )
 
@@ -56,40 +54,37 @@ class LexRank:
         self,
         sentences,
         threshold=.03,
-        discretize=True,
         fast_power_method=True,
-        normalize=False,
     ):
-        if not isinstance(threshold, float) or not 0 <= threshold < 1:
+        if not (
+            threshold is None or
+            isinstance(threshold, float) and 0 <= threshold < 1
+        ):
             raise ValueError(
                 '\'threshold\' should be a floating-point number '
-                'from the interval [0, 1)',
+                'from the interval [0, 1) or None',
             )
 
         tf_scores = [
-            self._calculate_tf(self.tokenize_sentence(sentence))
-            for sentence in sentences
+            Counter(self.tokenize_sentence(sentence)) for sentence in sentences
         ]
 
         similarity_matrix = self._calculate_similarity_matrix(tf_scores)
 
-        if discretize:
+        if threshold is None:
+            markov_matrix = self._markov_matrix(similarity_matrix)
+
+        else:
             markov_matrix = self._markov_matrix_discrete(
                 similarity_matrix,
                 threshold=threshold,
             )
 
-        else:
-            markov_matrix = self._markov_matrix(similarity_matrix)
-
         scores = stationary_distribution(
             markov_matrix,
             increase_power=fast_power_method,
+            normalized=False,
         )
-
-        if normalize:
-            scores_len = len(scores)
-            scores = [val * scores_len for val in scores]
 
         return scores
 
@@ -135,15 +130,6 @@ class LexRank:
             idf_score[word] = math.log(doc_number_total / doc_number_word)
 
         return idf_score
-
-    def _calculate_tf(self, tokenized_sentence):
-        tf_score = {}
-
-        for word in set(tokenized_sentence):
-            tf = tokenized_sentence.count(word)
-            tf_score[word] = tf
-
-        return tf_score
 
     def _calculate_similarity_matrix(self, tf_scores):
         length = len(tf_scores)

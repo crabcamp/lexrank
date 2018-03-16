@@ -29,7 +29,6 @@ def connected_nodes(matrix):
 
     for tag in np.unique(labels):
         group = np.where(labels == tag)[0]
-
         groups.append(group)
 
     return groups

@@ -50,5 +50,5 @@ def test_lexrank():
         'banking sector, education and the welfare state.',
     ]
 
-    summary = lxr.get_summary(sentences, discretize=False)
+    summary = lxr.get_summary(sentences, threshold=None)
     assert summary == [sentences[5]]
