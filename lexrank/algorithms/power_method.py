@@ -24,30 +24,33 @@ def _power_method(transition_matrix, increase_power=True):
 
 def connected_nodes(matrix):
     _, labels = connected_components(matrix)
-    groups = {}
 
-    for ix, label in enumerate(labels):
-        if label in groups:
-            groups[label].append(ix)
-            continue
+    groups = []
 
-        groups[label] = [ix]
+    for tag in np.unique(labels):
+        group = np.where(labels == tag)[0]
 
-    return list(groups.values())
+        groups.append(group)
+
+    return groups
 
 
-def stationary_distribution(transition_matrix, increase_power=True):
-    num_nodes = len(transition_matrix)
+def stationary_distribution(
+    transition_matrix,
+    increase_power=True,
+    normalized=True,
+):
+    size = len(transition_matrix)
     grouped_indices = connected_nodes(transition_matrix)
 
-    eigenvector = []
-    indices = []
+    eigenvector = np.zeros(size)
 
     for group in grouped_indices:
         t_matrix = transition_matrix[np.ix_(group, group)]
-        eigenvector.extend(
-            _power_method(t_matrix, increase_power=increase_power),
-        )
-        indices.extend(group)
+        eigenvalues = _power_method(t_matrix, increase_power=increase_power)
+        eigenvector[group] = eigenvalues
 
-    return [float(eigenvector[ix]) / num_nodes for ix in indices]
+    if normalized:
+        eigenvector /= size
+
+    return eigenvector
