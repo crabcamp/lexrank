@@ -38,7 +38,7 @@ def test_connected_nodes():
 
     t_matrix = np.array([[1]])
     result = connected_nodes(t_matrix)
-    expected_result = [np.array([0], dtype=np.int32)]
+    expected_result = [np.array([0])]
 
     assert all(
         np.array_equal(gr_res, gr_exp)
@@ -47,7 +47,7 @@ def test_connected_nodes():
 
     t_matrix = np.array([[.6, .1, .3], [.1, .7, .2], [.2, .2, .6]])
     result = connected_nodes(t_matrix)
-    expected_result = [np.array([0, 1, 2], dtype=np.int32)]
+    expected_result = [np.array([0, 1, 2])]
 
     assert all(
         np.array_equal(gr_res, gr_exp)
@@ -56,10 +56,7 @@ def test_connected_nodes():
 
     t_matrix = np.array([[.5, 0, .5], [0, 1, 0], [.5, 0, .5]])
     result = connected_nodes(t_matrix)
-    expected_result = [
-        np.array([0, 2], dtype=np.int32),
-        np.array([1], dtype=np.int32),
-    ]
+    expected_result = [np.array([0, 2]), np.array([1])]
 
     assert all(
         np.array_equal(gr_res, gr_exp)
@@ -73,11 +70,11 @@ def test_connected_nodes():
     t_matrix = block_diag(mat_1, mat_2, mat_3, mat_4)
     result = connected_nodes(t_matrix)
     expected_result = [
-        np.array([0, 2], dtype=np.int32),
-        np.array([1], dtype=np.int32),
-        np.array([3], dtype=np.int32),
-        np.array([4, 5], dtype=np.int32),
-        np.array([6, 7, 8], dtype=np.int32),
+        np.array([0, 2]),
+        np.array([1]),
+        np.array([3]),
+        np.array([4, 5]),
+        np.array([6, 7, 8]),
     ]
 
     assert all(
