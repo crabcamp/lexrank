@@ -79,7 +79,6 @@ as a corpus of documents.
 
 
     # get summary with continuous LexRank
-    # default value for 'summary_size' is 1
     summary_cont = lxr.get_summary(sentences, threshold=None)
     print(summary_cont)
 
