@@ -40,16 +40,16 @@ def stationary_distribution(
     normalized=True,
 ):
     size = len(transition_matrix)
-    grouped_indices = connected_nodes(transition_matrix)
+    distribution = np.zeros(size)
 
-    eigenvector = np.zeros(size)
+    grouped_indices = connected_nodes(transition_matrix)
 
     for group in grouped_indices:
         t_matrix = transition_matrix[np.ix_(group, group)]
-        eigenvalues = _power_method(t_matrix, increase_power=increase_power)
-        eigenvector[group] = eigenvalues
+        eigenvector = _power_method(t_matrix, increase_power=increase_power)
+        distribution[group] = eigenvector
 
     if normalized:
-        eigenvector /= size
+        distribution /= size
 
-    return eigenvector
+    return distribution
