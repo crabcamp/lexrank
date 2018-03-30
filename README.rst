@@ -79,20 +79,17 @@ as a corpus of documents.
 
 
     # get summary with continuous LexRank
-    # default value for 'summary_size' is 1 and 'threshold' is not referenced
-    summary_cont = lxr.get_summary(sentences, discretize=False)
+    summary_cont = lxr.get_summary(sentences, threshold=None)
     print(summary_cont)
 
     # ['The BBC understands that as chancellor, Mr Osborne, along with the Treasury '
     #  'will retain responsibility for overseeing banks and financial regulation.']
 
     # get LexRank scores for sentences
-    # when 'normalize' is True, all the scores are divided by the maximal one
-    # 'fast_power_method' speeds up the calculation, but requires more memory
+    # 'fast_power_method' speeds up the calculation, but requires more RAM
     scores_cont = lxr.rank_sentences(
         sentences,
-        discretize=False,
-        normalize=True,
+        threshold=None,
         fast_power_method=False,
     )
     print(scores_cont)
