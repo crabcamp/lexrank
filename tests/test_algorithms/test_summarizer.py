@@ -135,6 +135,11 @@ def test_lexrank():
 
     assert np.array_equal(np.round(lex_scores, 2), expected_lex_scores)
 
+    similarity = lxr.sentences_similarity(d1_s1, d2_s1)
+    expected_similarity = 0.17278015602565383
+
+    assert math.isclose(similarity, expected_similarity)
+
     summary = lxr.get_summary(sentences, threshold=.01)
     assert summary == [d4_s1]
 
