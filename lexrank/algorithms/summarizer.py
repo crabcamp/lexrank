@@ -88,6 +88,14 @@ class LexRank:
 
         return scores
 
+    def sentences_similarity(self, sentence_1, sentence_2):
+        tf_1 = Counter(self.tokenize_sentence(sentence_1))
+        tf_2 = Counter(self.tokenize_sentence(sentence_2))
+
+        similarity = self._idf_modified_cosine([tf_1, tf_2], 0, 1)
+
+        return similarity
+
     def tokenize_sentence(self, sentence):
         tokens = tokenize(
             sentence,
