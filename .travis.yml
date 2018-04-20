@@ -33,7 +33,7 @@ deploy:
   - provider: pypi
     server: https://testpypi.python.org/pypi
     distributions: sdist bdist_wheel
-    user: lshostenko
+    user: lshostenko_test
     password:
       secure: UMAua6+2HFhcm90KXMNRU5JJeRtClC+uF+trfJZU2f5/zV6QyYLgPohS8NNpyzwiTEADyVN3vq1m+g8H2tIXLr3bTWoAO5qDaljvO+GZD1+U4rkTPTcTFKPKXnHEWvsEWUNPKouD4Jz7sqOMvzTFkbgTvSJXKyfIoWbhkb1GUu/96l4evOWv5edKLMHDFXkPFMjbv9DrfEsWDltLR1exCNxrVEgZwEXsuUPxFyQ5ITPD/FbGDiD5U7jJPQt6+4X8yPVeuOkU/mfWCEtRjKHR2TJmoElRg51nfSdLCXgxlYs1ZIUQBobrAc/5t5UMMr/4yFTgVeBmtAc3Gu6wNzFykU623sqSIkyie1mV51/VIu7VyGBUkf4LfDSjNTj/z639GUdl/wLErEhgKU27FGClgi22YLOpK+cyWREA1R/6g5DVLnfPUH9PXdLGKmoF7Yz/PIsqmoOtGLA8cjKm1jF0Q/EDyJnV6PUGk9cq5MoYpYxfbbCPQnL3BAEDj0Myapjoa8VH141Y2uvbe0nAqw67kaH6k4YOUmswJ0YZKXGjojgQrq1BUK/HW8swGAxO5VDlU+XovbGrtol7Xm6bbVUMldqQ/9e4IgGBtDICD09WO87KZL7EwbJB3fYUQw6KiC0r4hMPvD13QtBkQEEnql27zt6IQtvNFSqZfo30tGRzVDQ=
     on:
