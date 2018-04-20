@@ -29,6 +29,23 @@ after_success:
 cache:
   pip: true
 
+deploy:
+  - provider: pypi
+    server: https://testpypi.python.org/pypi
+    distributions: "sdist bdist_wheel"
+    user: lshostenko
+    secure: ac+wRtSYuQZ871mPcF22ewI5TjyhijxXIm1cR8dFg0jRL8x9U7e4N1IuDpG9wUNtgRNZl+n+KftIst45F2qkUNqalAIOtpVWOV91Ixyyhcmu7x1F/LVLIE6tU9j3Opta7TEfMOdhq6X4QUq8bxTnso29ZEVcWcd4gH7Al/47oiuRxOwStQU2urAsqT30eG/z8q8R413N4GGHi9KvfeG9WSlI6uSwJX1IPl12mN9M/YxxxdpvujSwB0xC86zIVTsFkMo2fv2mtBxNj8gGgXNzMwfoscPXQSoRX0AUaJgWlST4JqdO/J6PE8pc8rnAQWp8Yz6ASCQHI91qdk/BL1LYaEIEOZSQA9vuFoz5ihfvBgmqHLntOw09LrMx3U84FiBXw8t8M7SqutMcGJueZnfPXtkcWC22a1nkQ55JpOI2ENEq2+0E/4SodATiLFQVx+9/RrkZdSIMzMdoGoqo5JLADj3X5QdqW3nkWqMific9X9V1GmVxtmFK94vmHxoe7UaKUJqJGJS0cMv3eDs4l/TgCq3nkAEj3DHw1S3tKut0ZxovKpMgTjrbc3gSaVc0twS07DR8Cn/4fQWFZxftKStalxXaA4mfA0cR+HzH+Kb0vDFMDwXPrItEqEqbQmUNJly1oUXbjx9yOKt4EsJVBNZtd+3IuSrdl4yd8qP2tVqOTdI=
+    on:
+      branch: test
+
+  - provider: pypi
+    server: https://pypi.python.org/pypi
+    distributions: "sdist bdist_wheel"
+    user: lshostenko
+    secure: ac+wRtSYuQZ871mPcF22ewI5TjyhijxXIm1cR8dFg0jRL8x9U7e4N1IuDpG9wUNtgRNZl+n+KftIst45F2qkUNqalAIOtpVWOV91Ixyyhcmu7x1F/LVLIE6tU9j3Opta7TEfMOdhq6X4QUq8bxTnso29ZEVcWcd4gH7Al/47oiuRxOwStQU2urAsqT30eG/z8q8R413N4GGHi9KvfeG9WSlI6uSwJX1IPl12mN9M/YxxxdpvujSwB0xC86zIVTsFkMo2fv2mtBxNj8gGgXNzMwfoscPXQSoRX0AUaJgWlST4JqdO/J6PE8pc8rnAQWp8Yz6ASCQHI91qdk/BL1LYaEIEOZSQA9vuFoz5ihfvBgmqHLntOw09LrMx3U84FiBXw8t8M7SqutMcGJueZnfPXtkcWC22a1nkQ55JpOI2ENEq2+0E/4SodATiLFQVx+9/RrkZdSIMzMdoGoqo5JLADj3X5QdqW3nkWqMific9X9V1GmVxtmFK94vmHxoe7UaKUJqJGJS0cMv3eDs4l/TgCq3nkAEj3DHw1S3tKut0ZxovKpMgTjrbc3gSaVc0twS07DR8Cn/4fQWFZxftKStalxXaA4mfA0cR+HzH+Kb0vDFMDwXPrItEqEqbQmUNJly1oUXbjx9yOKt4EsJVBNZtd+3IuSrdl4yd8qP2tVqOTdI=
+    on:
+      tags: true
+
 notifications:
   email: false
 
