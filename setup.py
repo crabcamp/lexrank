@@ -33,7 +33,7 @@ setup(
     url='https://github.com/wikibusiness/lexrank',
     download_url='https://github.com/wikibusiness/lexrank/archive/{version}.tar.gz'.format(  # noqa
         version=VERSION,
-    ),  # noqa
+    ),
     packages=find_packages(include=['lexrank.*']),
     py_modules=['lexrank.settings'],
     python_requires='>=3.5.0',
