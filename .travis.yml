@@ -31,7 +31,7 @@ cache:
 
 deploy:
   - provider: pypi
-    server: https://testpypi.python.org/pypi
+    server: https://test.pypi.org/pypi
     distributions: sdist bdist_wheel
     user: lshostenko_test
     password:
@@ -40,7 +40,7 @@ deploy:
       branch: test
 
   - provider: pypi
-    server: https://pypi.python.org/pypi
+    server: https://pypi.org/pypi
     distributions: sdist bdist_wheel
     user: lshostenko
     password:
