@@ -8,8 +8,8 @@ env:
   - LATEST_STABLE_PYTHON=3.6
 
 python:
-  - 3.5
-  - LATEST_STABLE_PYTHON
+  - '3.5'
+  - '3.6'
 
 before_install:
   - python --version
@@ -33,7 +33,7 @@ cache:
   pip: true
 
 deploy:
-  - if: TRAVIS_PYTHON_VERSION = LATEST_STABLE_PYTHON
+  - if: TRAVIS_PYTHON_VERSION = '3.6'
     provider: pypi
     server: https://test.pypi.org/legacy/
     distributions: sdist bdist_wheel
@@ -43,7 +43,7 @@ deploy:
     on:
       branch: test
 
-  - if: TRAVIS_PYTHON_VERSION = LATEST_STABLE_PYTHON
+  - if: TRAVIS_PYTHON_VERSION = '3.6'
     provider: pypi
     server: https://pypi.org/pypi/
     distributions: sdist bdist_wheel
