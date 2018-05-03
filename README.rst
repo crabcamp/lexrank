@@ -1,10 +1,18 @@
 lexrank
 =======
 
-:info: LexRank algorithm for text summarization
+LexRank algorithm for text summarization
 
 .. image:: https://travis-ci.org/wikibusiness/lexrank.svg?branch=dev
     :target: https://travis-ci.org/wikibusiness/lexrank
+
+.. image:: https://badge.fury.io/py/lexrank.svg
+    :target: https://badge.fury.io/py/lexrank
+
+Info
+----
+
+LexRank is an unsupervised approach to text summarization based on graph-based centrality scoring of sentences. The main idea is that sentences "recommend" other similar sentences to the reader. Thus, if one sentence is very similar to many others, it will likely be a sentence of great importance. The importance of this sentence also stems from the importance of the sentences "recommending" it. Thus, to get ranked highly and placed in a summary, a sentence must be similar to many sentences that are in turn also similar to many other sentences. This makes intuitive sense and allows the algorithms to be applied to any arbitrary new text.
 
 Installation
 ------------
@@ -76,37 +84,34 @@ as a corpus of documents.
 
 
     # get summary with continuous LexRank
-    # default value for 'summary_size' is 1 and 'threshold' is not referenced
-    summary_cont = lxr.get_summary(sentences, discretize=False)
+    summary_cont = lxr.get_summary(sentences, threshold=None)
     print(summary_cont)
 
     # ['The BBC understands that as chancellor, Mr Osborne, along with the Treasury '
     #  'will retain responsibility for overseeing banks and financial regulation.']
 
     # get LexRank scores for sentences
-    # when 'normalize' is True, all the scores are divided by the maximal one
-    # 'fast_power_method' speeds up the calculation, but requires more memory
+    # 'fast_power_method' speeds up the calculation, but requires more RAM
     scores_cont = lxr.rank_sentences(
         sentences,
-        discretize=False,
-        normalize=True,
+        threshold=None,
         fast_power_method=False,
     )
     print(scores_cont)
 
-    # [0.9193576793242669,
-    #  0.7602507729889821,
-    #  0.939832498150748,
-    #  0.6985590010158195,
-    #  0.6844271578353363,
-    #  1.0,
-    #  0.9036049881647119]
+    #  [1.0896493024505858,
+    #  0.9010711968859021,
+    #  1.1139166497016315,
+    #  0.8279523250808547,
+    #  0.8112028559566362,
+    #  1.185228912485382,
+    #  1.0709787574388283]
 
 Stop words for 22 languages are included into the package. To define your own mapping of stop words, prepare text files with utf-8 encoding where words are separated by newlines. Then use the command
 
 .. code-block:: bash
 
-    assemble_stopwords --source_dir directory_with_txt_files
+    lexrank_assemble_stopwords --source_dir directory_with_txt_files
 
 that replaces the default mapping. Note that names of .txt files are used as keys in `STOPWORDS` dictionary.
 

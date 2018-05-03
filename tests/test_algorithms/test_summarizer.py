@@ -1,4 +1,5 @@
 import math
+from collections import Counter
 
 import numpy as np
 import pytest
@@ -97,8 +98,7 @@ def test_lexrank():
     lxr = LexRank(documents, keep_numbers=True)
 
     tf_scores = [
-        lxr._calculate_tf(lxr.tokenize_sentence(sentence))
-        for sentence in sentences
+        Counter(lxr.tokenize_sentence(sentence)) for sentence in sentences
     ]
 
     similarity_matrix = np.round(
@@ -121,21 +121,24 @@ def test_lexrank():
 
     assert np.array_equal(similarity_matrix, expected_similarity_matrix)
 
-    lex_scores = lxr.rank_sentences(
-        sentences, normalize=True, discretize=True, threshold=.01)
-    expexted_lex_scores = [
-        0.55, 0.82, 0.91, 1., 0.91, 0.91, 0.73, 1., 0.73, 0.91, 0.73,
+    lex_scores = lxr.rank_sentences(sentences, threshold=.01)
+    expected_lex_scores = [
+        0.65, 0.98, 1.09, 1.2, 1.09, 1.09, 0.87, 1.2, 0.87, 1.09, 0.87,
     ]
 
-    assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)
+    assert np.array_equal(np.round(lex_scores, 2), expected_lex_scores)
 
-    lex_scores = lxr.rank_sentences(
-        sentences, normalize=True, discretize=False)
-    expexted_lex_scores = [
-        0.78, 1., 0.91, 1., 0.91, 0.95, 0.83, 0.86, 0.9, 0.86, 0.84,
+    lex_scores = lxr.rank_sentences(sentences, threshold=None)
+    expected_lex_scores = [
+        0.87, 1.12, 1.02, 1.12, 1.02, 1.06, 0.93, 0.96, 1.01, 0.96, 0.94,
     ]
 
-    assert np.array_equal(np.round(lex_scores, 2), expexted_lex_scores)
+    assert np.array_equal(np.round(lex_scores, 2), expected_lex_scores)
+
+    similarity = lxr.sentences_similarity(d1_s1, d2_s1)
+    expected_similarity = 0.17278015602565383
+
+    assert math.isclose(similarity, expected_similarity)
 
     summary = lxr.get_summary(sentences, threshold=.01)
     assert summary == [d4_s1]

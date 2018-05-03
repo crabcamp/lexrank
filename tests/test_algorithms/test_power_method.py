@@ -10,36 +10,77 @@ from lexrank.algorithms.power_method import (
 
 def test_connected_nodes():
     t_matrix = np.array([[1]])
-    expected_result = [[0]]
-    assert connected_nodes(t_matrix) == expected_result
+    result = connected_nodes(t_matrix)
+    expected_result = [np.array([0])]
+
+    assert all(
+        np.array_equal(gr_res, gr_exp)
+        for gr_res, gr_exp in zip(result, expected_result)
+    )
 
     t_matrix = np.array([[1, 0], [0, 1]])
-    expected_result = [[0], [1]]
-    assert connected_nodes(t_matrix) == expected_result
+    result = connected_nodes(t_matrix)
+    expected_result = [np.array([0]), np.array([1])]
+
+    assert all(
+        np.array_equal(gr_res, gr_exp)
+        for gr_res, gr_exp in zip(result, expected_result)
+    )
 
     t_matrix = np.array([[1, 0], [1, 0]])
-    expected_result = [[0, 1]]
-    assert connected_nodes(t_matrix) == expected_result
+    result = connected_nodes(t_matrix)
+    expected_result = [np.array([0, 1])]
+
+    assert all(
+        np.array_equal(gr_res, gr_exp)
+        for gr_res, gr_exp in zip(result, expected_result)
+    )
 
     t_matrix = np.array([[1]])
-    expected_result = [[0]]
-    assert connected_nodes(t_matrix) == expected_result
+    result = connected_nodes(t_matrix)
+    expected_result = [np.array([0])]
+
+    assert all(
+        np.array_equal(gr_res, gr_exp)
+        for gr_res, gr_exp in zip(result, expected_result)
+    )
 
     t_matrix = np.array([[.6, .1, .3], [.1, .7, .2], [.2, .2, .6]])
-    expected_result = [[0, 1, 2]]
-    assert connected_nodes(t_matrix) == expected_result
+    result = connected_nodes(t_matrix)
+    expected_result = [np.array([0, 1, 2])]
+
+    assert all(
+        np.array_equal(gr_res, gr_exp)
+        for gr_res, gr_exp in zip(result, expected_result)
+    )
 
     t_matrix = np.array([[.5, 0, .5], [0, 1, 0], [.5, 0, .5]])
-    expected_result = [[0, 2], [1]]
-    assert connected_nodes(t_matrix) == expected_result
+    result = connected_nodes(t_matrix)
+    expected_result = [np.array([0, 2]), np.array([1])]
+
+    assert all(
+        np.array_equal(gr_res, gr_exp)
+        for gr_res, gr_exp in zip(result, expected_result)
+    )
 
     mat_1 = np.array([[.5, 0, .5], [0, 1, 0], [.5, 0, .5]])
     mat_2 = np.array([[1]])
     mat_3 = np.array([[0, 1], [1, 0]])
     mat_4 = np.array([[.6, .1, .3], [.1, .7, .2], [.2, .2, .6]])
     t_matrix = block_diag(mat_1, mat_2, mat_3, mat_4)
-    expected_result = [[0, 2], [1], [3], [4, 5], [6, 7, 8]]
-    assert connected_nodes(t_matrix) == expected_result
+    result = connected_nodes(t_matrix)
+    expected_result = [
+        np.array([0, 2]),
+        np.array([1]),
+        np.array([3]),
+        np.array([4, 5]),
+        np.array([6, 7, 8]),
+    ]
+
+    assert all(
+        np.array_equal(gr_res, gr_exp)
+        for gr_res, gr_exp in zip(result, expected_result)
+    )
 
 
 def test_stationary_distribution():
@@ -140,7 +181,9 @@ def test_stationary_distribution():
     big_t_mat /= big_t_mat.sum(axis=1, keepdims=True)
     distribution_1 = stationary_distribution(big_t_mat, increase_power=True)
     distribution_2 = stationary_distribution(big_t_mat, increase_power=False)
+    distribution_3 = stationary_distribution(big_t_mat, normalized=False)
 
     assert math.isclose(sum(distribution_1), 1)
     assert math.isclose(sum(distribution_2), 1)
+    assert math.isclose(sum(distribution_3), sample_num)
     assert np.allclose(distribution_1, distribution_2)
