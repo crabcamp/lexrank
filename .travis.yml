@@ -38,7 +38,7 @@ deploy:
       branch: test
 
   - provider: pypi
-    server: https://pypi.org/pypi/
+    server: https://upload.pypi.org/legacy/
     distributions: sdist bdist_wheel
     user: lshostenko
     password:
