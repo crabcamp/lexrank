@@ -28,7 +28,7 @@ cache:
   pip: true
 
 deploy:
-    provider: pypi
+  - provider: pypi
     server: https://test.pypi.org/legacy/
     distributions: sdist bdist_wheel
     user: lshostenko_test
@@ -37,7 +37,7 @@ deploy:
     on:
       branch: test
 
-    provider: pypi
+  - provider: pypi
     server: https://pypi.org/pypi/
     distributions: sdist bdist_wheel
     user: lshostenko
