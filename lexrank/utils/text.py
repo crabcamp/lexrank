@@ -28,15 +28,15 @@ def filter_words(words, stopwords, keep_numbers=False):
     if keep_numbers:
         words = [
             word for word in words
-            if (contains_letters(word) or contains_numbers(word)) and
-            word not in stopwords
+            if (contains_letters(word) or contains_numbers(word))
+            and word not in stopwords
         ]
 
     else:
         words = [
             word for word in words
-            if contains_letters(word) and not contains_numbers(word) and
-            word not in stopwords
+            if contains_letters(word) and not contains_numbers(word)
+            and word not in stopwords
         ]
 
     return words

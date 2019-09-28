@@ -57,8 +57,9 @@ class LexRank:
         fast_power_method=True,
     ):
         if not (
-            threshold is None or
-            isinstance(threshold, float) and 0 <= threshold < 1
+            threshold is None
+            or isinstance(threshold, float)
+            and 0 <= threshold < 1
         ):
             raise ValueError(
                 '\'threshold\' should be a floating-point number '
@@ -126,7 +127,7 @@ class LexRank:
         doc_number_total = len(bags_of_words)
 
         if self.include_new_words:
-            default_value = math.log(doc_number_total + 1)
+            default_value = 1
 
         else:
             default_value = 0
