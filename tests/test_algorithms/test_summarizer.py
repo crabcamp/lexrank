@@ -25,7 +25,7 @@ def test_lexrank():
     )
 
     assert math.isclose(lxr.idf_score['world'], math.log(2))
-    assert math.isclose(lxr.idf_score['test'], math.log(3))
+    assert math.isclose(lxr.idf_score['test'], 1)
 
     d1_s1 = 'Iraqi Vice President Taha Yassin Ramadan announced today, ' \
         'Sunday, that Iraq refuses to back down from its decision to stop ' \
