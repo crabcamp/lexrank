@@ -1,1 +1,1 @@
-from lexrank.lexrank import LexRank  # noqa
+from lexrank.lexrank import LexRank, degree_centrality_scores  # noqa

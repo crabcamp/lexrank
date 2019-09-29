@@ -10,6 +10,39 @@ from lexrank.algorithms.power_method import (
 from lexrank.utils.text import tokenize
 
 
+def degree_centrality_scores(
+    similarity_matrix,
+    threshold=None,
+    increase_power=True,
+):
+    if not (
+        threshold is None
+        or isinstance(threshold, float)
+        and 0 <= threshold < 1
+    ):
+        raise ValueError(
+            '\'threshold\' should be a floating-point number '
+            'from the interval [0, 1) or None',
+        )
+
+    if threshold is None:
+        markov_matrix = create_markov_matrix(similarity_matrix)
+
+    else:
+        markov_matrix = create_markov_matrix_discrete(
+            similarity_matrix,
+            threshold,
+        )
+
+    scores = stationary_distribution(
+        markov_matrix,
+        increase_power=increase_power,
+        normalized=False,
+    )
+
+    return scores
+
+
 class LexRank:
     def __init__(
         self,
@@ -59,35 +92,16 @@ class LexRank:
         threshold=.03,
         fast_power_method=True,
     ):
-        if not (
-            threshold is None
-            or isinstance(threshold, float)
-            and 0 <= threshold < 1
-        ):
-            raise ValueError(
-                '\'threshold\' should be a floating-point number '
-                'from the interval [0, 1) or None',
-            )
-
         tf_scores = [
             Counter(self.tokenize_sentence(sentence)) for sentence in sentences
         ]
 
         similarity_matrix = self._calculate_similarity_matrix(tf_scores)
 
-        if threshold is None:
-            markov_matrix = create_markov_matrix(similarity_matrix)
-
-        else:
-            markov_matrix = create_markov_matrix_discrete(
-                similarity_matrix,
-                threshold,
-            )
-
-        scores = stationary_distribution(
-            markov_matrix,
+        scores = degree_centrality_scores(
+            similarity_matrix,
+            threshold=threshold,
             increase_power=fast_power_method,
-            normalized=False,
         )
 
         return scores
