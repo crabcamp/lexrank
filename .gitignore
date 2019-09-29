@@ -13,6 +13,7 @@ dist
 *.log
 *.pyo
 *.pyc
+.pytest_cache/*
 __pycache__
 *$py.class
 *.sublime-project
@@ -34,6 +35,7 @@ celerybeat-schedule*
 .cache
 *.zip
 *rpm
+datasets/*
+!datasets/__init__.py
 temp/*
-temp*
 src/*

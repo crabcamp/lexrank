@@ -30,7 +30,8 @@ as a corpus of documents.
 
 .. code-block:: python
 
-    from lexrank import STOPWORDS, LexRank
+    from lexrank import LexRank
+    from lexrank.mappings.stopwords import STOPWORDS
     from path import Path
 
     documents = []
