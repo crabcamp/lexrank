@@ -52,13 +52,30 @@ def create_markov_matrix_discrete(weights_matrix, threshold):
     return create_markov_matrix(discrete_weights_matrix)
 
 
+def graph_nodes_clusters(transition_matrix, increase_power=True):
+    clusters = connected_nodes(transition_matrix)
+    clusters.sort(key=len, reverse=True)
+
+    centroid_scores = []
+
+    for group in clusters:
+        t_matrix = transition_matrix[np.ix_(group, group)]
+        eigenvector = _power_method(t_matrix, increase_power=increase_power)
+        centroid_scores.append(eigenvector / len(group))
+
+    return clusters, centroid_scores
+
+
 def stationary_distribution(
     transition_matrix,
     increase_power=True,
     normalized=True,
 ):
-    size = len(transition_matrix)
-    distribution = np.zeros(size)
+    n_1, n_2 = transition_matrix.shape
+    if n_1 != n_2:
+        raise ValueError('\'transition_matrix\' should be square')
+
+    distribution = np.zeros(n_1)
 
     grouped_indices = connected_nodes(transition_matrix)
 
@@ -68,6 +85,6 @@ def stationary_distribution(
         distribution[group] = eigenvector
 
     if normalized:
-        distribution /= size
+        distribution /= n_1
 
     return distribution
