@@ -1,8 +1,6 @@
 import gzip
 import json
 
-from pyrsistent import freeze
-
 from lexrank import settings
 
 file = settings.ASSETS_ROOT / 'stopwords.json.gz'
@@ -14,5 +12,3 @@ STOPWORDS = {}
 
 for lang, stopwords in _STOPWORDS.items():
     STOPWORDS[lang] = set(stopwords)
-
-STOPWORDS = freeze(STOPWORDS)
