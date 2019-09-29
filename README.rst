@@ -143,7 +143,6 @@ The straightforward implementation of LexRank algorithm described above may be i
     )
 
     # scores calculated with classical LexRank algorithm
-    degree_centrality_scores(similarity_matrix)
     degree_centrality_scores(similarity_matrix, thershold=.1)
 
     # array([0.66666667, 1.        , 1.11111111, 1.22222222, 1.11111111,
