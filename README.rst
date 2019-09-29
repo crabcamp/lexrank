@@ -157,7 +157,7 @@ The straightforward implementation of LexRank algorithm described above may be i
     #        1.06119074, 0.9277839 , 0.96416759, 1.01874311, 0.95810364,
     #        0.9399118 ])
 
-The function :code:`degree_centrality_scores` takes as input a similarity matrix so it is not restricted to NLP only. It can be used with any objects if there is a proper similarity measure between them. When creating a custom :code:`similarity_matrix` it is necessary to ensure that all its values are in range [0, 1].
+The function :code:`degree_centrality_scores` takes as input a similarity matrix so it is not restricted to NLP only. It can be used for any objects if exists a proper way to measure their similarity. When creating a custom :code:`similarity_matrix` it is necessary to ensure that all its values are in range [0, 1].
 
 Tests
 -----
