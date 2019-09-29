@@ -34,6 +34,24 @@ def connected_nodes(matrix):
     return groups
 
 
+def create_markov_matrix(weights_matrix):
+    n_1, n_2 = weights_matrix.shape
+    if n_1 != n_2:
+        raise ValueError('\'weights_matrix\' should be square')
+
+    row_sum = weights_matrix.sum(axis=1, keepdims=True)
+
+    return weights_matrix / row_sum
+
+
+def create_markov_matrix_discrete(weights_matrix, threshold):
+    discrete_weights_matrix = np.zeros(weights_matrix.shape)
+    ixs = np.where(weights_matrix >= threshold)
+    discrete_weights_matrix[ixs] = 1
+
+    return create_markov_matrix(discrete_weights_matrix)
+
+
 def stationary_distribution(
     transition_matrix,
     increase_power=True,

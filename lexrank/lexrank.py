@@ -3,7 +3,10 @@ from collections import Counter, defaultdict
 
 import numpy as np
 
-from lexrank.algorithms.power_method import stationary_distribution
+from lexrank.algorithms.power_method import (
+    create_markov_matrix, create_markov_matrix_discrete,
+    stationary_distribution,
+)
 from lexrank.utils.text import tokenize
 
 
@@ -73,12 +76,12 @@ class LexRank:
         similarity_matrix = self._calculate_similarity_matrix(tf_scores)
 
         if threshold is None:
-            markov_matrix = self._markov_matrix(similarity_matrix)
+            markov_matrix = create_markov_matrix(similarity_matrix)
 
         else:
-            markov_matrix = self._markov_matrix_discrete(
+            markov_matrix = create_markov_matrix_discrete(
                 similarity_matrix,
-                threshold=threshold,
+                threshold,
             )
 
         scores = stationary_distribution(
@@ -184,17 +187,3 @@ class LexRank:
         similarity = nominator / math.sqrt(denominator_i * denominator_j)
 
         return similarity
-
-    def _markov_matrix(self, similarity_matrix):
-        row_sum = similarity_matrix.sum(axis=1, keepdims=True)
-
-        return similarity_matrix / row_sum
-
-    def _markov_matrix_discrete(self, similarity_matrix, threshold):
-        markov_matrix = np.zeros(similarity_matrix.shape)
-
-        for i in range(len(similarity_matrix)):
-            columns = np.where(similarity_matrix[i] > threshold)[0]
-            markov_matrix[i, columns] = 1 / len(columns)
-
-        return markov_matrix
