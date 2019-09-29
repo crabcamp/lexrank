@@ -157,7 +157,7 @@ The straightforward implementation of LexRank algorithm described above may be i
     #        1.06119074, 0.9277839 , 0.96416759, 1.01874311, 0.95810364,
     #        0.9399118 ])
 
-When creating a custom :code:`similarity_matrix` it is necessary to select a proper similarity measure between vectors which gives a score in range [0, 1].
+When creating a custom :code:`similarity_matrix` it is necessary to ensure that your similarity measure gives scores in range [0, 1].
 
 Tests
 -----
