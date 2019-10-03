@@ -3,8 +3,44 @@ from collections import Counter, defaultdict
 
 import numpy as np
 
-from lexrank.algorithms.power_method import stationary_distribution
+from lexrank.algorithms.power_method import (
+    create_markov_matrix, create_markov_matrix_discrete,
+    stationary_distribution,
+)
 from lexrank.utils.text import tokenize
+
+
+def degree_centrality_scores(
+    similarity_matrix,
+    threshold=None,
+    increase_power=True,
+):
+    if not (
+        threshold is None
+        or isinstance(threshold, float)
+        and 0 <= threshold < 1
+    ):
+        raise ValueError(
+            '\'threshold\' should be a floating-point number '
+            'from the interval [0, 1) or None',
+        )
+
+    if threshold is None:
+        markov_matrix = create_markov_matrix(similarity_matrix)
+
+    else:
+        markov_matrix = create_markov_matrix_discrete(
+            similarity_matrix,
+            threshold,
+        )
+
+    scores = stationary_distribution(
+        markov_matrix,
+        increase_power=increase_power,
+        normalized=False,
+    )
+
+    return scores
 
 
 class LexRank:
@@ -56,34 +92,16 @@ class LexRank:
         threshold=.03,
         fast_power_method=True,
     ):
-        if not (
-            threshold is None or
-            isinstance(threshold, float) and 0 <= threshold < 1
-        ):
-            raise ValueError(
-                '\'threshold\' should be a floating-point number '
-                'from the interval [0, 1) or None',
-            )
-
         tf_scores = [
             Counter(self.tokenize_sentence(sentence)) for sentence in sentences
         ]
 
         similarity_matrix = self._calculate_similarity_matrix(tf_scores)
 
-        if threshold is None:
-            markov_matrix = self._markov_matrix(similarity_matrix)
-
-        else:
-            markov_matrix = self._markov_matrix_discrete(
-                similarity_matrix,
-                threshold=threshold,
-            )
-
-        scores = stationary_distribution(
-            markov_matrix,
+        scores = degree_centrality_scores(
+            similarity_matrix,
+            threshold=threshold,
             increase_power=fast_power_method,
-            normalized=False,
         )
 
         return scores
@@ -126,7 +144,7 @@ class LexRank:
         doc_number_total = len(bags_of_words)
 
         if self.include_new_words:
-            default_value = math.log(doc_number_total + 1)
+            default_value = 1
 
         else:
             default_value = 0
@@ -183,17 +201,3 @@ class LexRank:
         similarity = nominator / math.sqrt(denominator_i * denominator_j)
 
         return similarity
-
-    def _markov_matrix(self, similarity_matrix):
-        row_sum = similarity_matrix.sum(axis=1, keepdims=True)
-
-        return similarity_matrix / row_sum
-
-    def _markov_matrix_discrete(self, similarity_matrix, threshold):
-        markov_matrix = np.zeros(similarity_matrix.shape)
-
-        for i in range(len(similarity_matrix)):
-            columns = np.where(similarity_matrix[i] > threshold)[0]
-            markov_matrix[i, columns] = 1 / len(columns)
-
-        return markov_matrix

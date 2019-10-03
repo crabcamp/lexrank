@@ -16,8 +16,8 @@ VERSION = '0.1.0'
 
 setup(
     name='lexrank',
-    maintainer='Ocean S.A.',
-    maintainer_email='support@ocean.io',
+    maintainer='Luka Shostenko',
+    maintainer_email='luka.shostenko@gmail.com',
     version='{version}'.format(
         version=VERSION,
     ),
@@ -30,8 +30,8 @@ setup(
     license='MIT',
     author='Luka Shostenko',
     author_email='luka.shostenko@gmail.com',
-    url='https://github.com/wikibusiness/lexrank',
-    download_url='https://github.com/wikibusiness/lexrank/archive/{version}.tar.gz'.format(  # noqa
+    url='https://github.com/crabcamp/lexrank',
+    download_url='https://github.com/crabcamp/lexrank/archive/{version}.tar.gz'.format(  # noqa
         version=VERSION,
     ),
     packages=find_packages(include=['lexrank.*']),

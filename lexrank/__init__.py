@@ -1,2 +1,1 @@
-from lexrank.algorithms.summarizer import LexRank  # noqa
-from lexrank.mappings.stopwords import STOPWORDS  # noqa
+from lexrank.lexrank import LexRank, degree_centrality_scores  # noqa

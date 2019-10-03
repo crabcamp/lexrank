@@ -4,7 +4,7 @@ import numpy as np
 from scipy.linalg import block_diag
 
 from lexrank.algorithms.power_method import (
-    connected_nodes, stationary_distribution,
+    connected_nodes, graph_nodes_clusters, stationary_distribution,
 )
 
 
@@ -80,6 +80,80 @@ def test_connected_nodes():
     assert all(
         np.array_equal(gr_res, gr_exp)
         for gr_res, gr_exp in zip(result, expected_result)
+    )
+
+
+def test_graph_nodes_clusters():
+    t_matrix = np.array([[1]])
+    clusters, scores = graph_nodes_clusters(t_matrix)
+    expected_clusters = [np.array([0])]
+    expected_scores = [np.array([1.])]
+
+    assert all(
+        np.array_equal(result, expected)
+        for result, expected in zip(clusters, expected_clusters)
+    )
+    assert all(
+        np.allclose(result, expected)
+        for result, expected in zip(scores, expected_scores)
+    )
+
+    t_matrix = np.array([[.6, .1, .3], [.1, .7, .2], [.2, .2, .6]])
+    clusters, scores = graph_nodes_clusters(t_matrix)
+    expected_clusters = [np.array([0, 1, 2])]
+    expected_scores = [np.array([0.27586207, 0.34482759, 0.37931034])]
+
+    assert all(
+        np.array_equal(result, expected)
+        for result, expected in zip(clusters, expected_clusters)
+    )
+    assert all(
+        np.allclose(result, expected)
+        for result, expected in zip(scores, expected_scores)
+    )
+
+    t_matrix = np.array([[.5, 0, .5], [0, 1, 0], [.5, 0, .5]])
+    clusters, scores = graph_nodes_clusters(t_matrix)
+    expected_clusters = [np.array([0, 2]), np.array([1])]
+    expected_scores = [np.array([0.5, 0.5]), np.array([1.])]
+
+    assert all(
+        np.array_equal(result, expected)
+        for result, expected in zip(clusters, expected_clusters)
+    )
+    assert all(
+        np.allclose(result, expected)
+        for result, expected in zip(scores, expected_scores)
+    )
+
+    mat_1 = np.array([[.5, 0, .5], [0, 1, 0], [.5, 0, .5]])
+    mat_2 = np.array([[1]])
+    mat_3 = np.array([[0, 1], [1, 0]])
+    mat_4 = np.array([[.6, .1, .3], [.1, .7, .2], [.2, .2, .6]])
+    t_matrix = block_diag(mat_1, mat_2, mat_3, mat_4)
+    clusters, scores = graph_nodes_clusters(t_matrix)
+    expected_clusters = [
+        np.array([6, 7, 8]),
+        np.array([0, 2]),
+        np.array([4, 5]),
+        np.array([1]),
+        np.array([3]),
+    ]
+    expected_scores = [
+        np.array([0.27586207, 0.34482759, 0.37931034]),
+        np.array([0.5, 0.5]),
+        np.array([0.5, 0.5]),
+        np.array([1.]),
+        np.array([1.]),
+    ]
+
+    assert all(
+        np.array_equal(result, expected)
+        for result, expected in zip(clusters, expected_clusters)
+    )
+    assert all(
+        np.allclose(result, expected)
+        for result, expected in zip(scores, expected_scores)
     )
 
 

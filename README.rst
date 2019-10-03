@@ -30,7 +30,8 @@ as a corpus of documents.
 
 .. code-block:: python
 
-    from lexrank import STOPWORDS, LexRank
+    from lexrank import LexRank
+    from lexrank.mappings.stopwords import STOPWORDS
     from path import Path
 
     documents = []
@@ -114,6 +115,48 @@ Stop words for 22 languages are included into the package. To define your own ma
     lexrank_assemble_stopwords --source_dir directory_with_txt_files
 
 that replaces the default mapping. Note that names of .txt files are used as keys in `STOPWORDS` dictionary.
+
+Customization
+-------------
+
+The straightforward implementation of LexRank algorithm described above may be insufficient for modern NLP tasks. It cannot be used with sentence embeddings or custom tf-idf vectors, prepared with different third-party software. Therefore we provide a core function to work with similarity matrix of sentences.
+
+.. code-block:: python
+
+    import numpy as np
+    from lexrank import degree_centrality_scores
+
+    similarity_matrix = np.array(
+        [
+            [1.00, 0.17, 0.02, 0.03, 0.00, 0.01, 0.00, 0.17, 0.03, 0.00, 0.00],
+            [0.17, 1.00, 0.32, 0.19, 0.02, 0.03, 0.03, 0.04, 0.01, 0.02, 0.01],
+            [0.02, 0.32, 1.00, 0.13, 0.02, 0.02, 0.05, 0.05, 0.01, 0.03, 0.02],
+            [0.03, 0.19, 0.13, 1.00, 0.05, 0.05, 0.19, 0.06, 0.05, 0.06, 0.03],
+            [0.00, 0.02, 0.02, 0.05, 1.00, 0.33, 0.09, 0.05, 0.03, 0.03, 0.06],
+            [0.01, 0.03, 0.02, 0.05, 0.33, 1.00, 0.09, 0.04, 0.06, 0.08, 0.04],
+            [0.00, 0.03, 0.05, 0.19, 0.09, 0.09, 1.00, 0.05, 0.01, 0.01, 0.01],
+            [0.17, 0.04, 0.05, 0.06, 0.05, 0.04, 0.05, 1.00, 0.04, 0.05, 0.04],
+            [0.03, 0.01, 0.01, 0.05, 0.03, 0.06, 0.01, 0.04, 1.00, 0.20, 0.24],
+            [0.00, 0.02, 0.03, 0.06, 0.03, 0.08, 0.01, 0.05, 0.20, 1.00, 0.10],
+            [0.00, 0.01, 0.02, 0.03, 0.06, 0.04, 0.01, 0.04, 0.24, 0.10, 1.00],
+        ],
+    )
+
+    # scores calculated with classical LexRank algorithm
+    degree_centrality_scores(similarity_matrix, thershold=.1)
+
+    # array([0.66666667, 1.        , 1.11111111, 1.22222222, 1.11111111,
+    #        1.11111111, 0.77777778, 1.22222222, 0.88888889, 1.        ,
+    #        0.88888889])
+
+    # scores by continuous LexRank
+    degree_centrality_scores(similarity_matrix, thershold=None)
+
+    # array([0.86714443, 1.11576626, 1.01267916, 1.11576626, 1.01874311,
+    #        1.06119074, 0.9277839 , 0.96416759, 1.01874311, 0.95810364,
+    #        0.9399118 ])
+
+The function :code:`degree_centrality_scores` takes as input a similarity matrix so it is not restricted to NLP only. It can be used for any objects if exists a proper way to measure their similarity. When creating a custom :code:`similarity_matrix` it is necessary to ensure that all its values are in range [0, 1].
 
 Tests
 -----
