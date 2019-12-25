@@ -34,7 +34,7 @@ setup(
     download_url='https://github.com/crabcamp/lexrank/archive/{version}.tar.gz'.format(  # noqa
         version=VERSION,
     ),
-    packages=find_packages(include=['lexrank.*']),
+    packages=find_packages(),
     py_modules=['lexrank.settings'],
     python_requires='>=3.5.0',
     install_requires=install_requires,
